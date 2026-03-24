@@ -7,6 +7,7 @@ live, watching the space-time diagram grow row by row.
 To run: python examples/gui_experiments.py
 """
 
+import os
 import numpy as np
 import random
 
@@ -154,6 +155,7 @@ def main():
         figsize=(16, 9),
         interval=INTERVAL_MS,
         view_window=80,
+        save_dir=os.path.dirname(os.path.abspath(__file__)),
     )
     gui.show()
 

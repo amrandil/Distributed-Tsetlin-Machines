@@ -1,13 +1,14 @@
 """
-Interactive GUI — Wolfram Rule 30
+Interactive GUI — Wolfram Rule 110
 
-Rule 30 is a chaotic elementary CA whose center column is used by Mathematica
-as a pseudo-random number generator.  Starting from a single live cell it
-produces highly irregular, seemingly random patterns.
+Rule 110 is a Turing-complete elementary CA known for its complex, irregular
+patterns that never fully settle. Start with a single live cell in the center
+and watch it grow.
 
-To run: python examples/gui_rule30.py
+To run: python examples/gui_rule110.py
 """
 
+import os
 import numpy as np
 import random
 
@@ -34,7 +35,7 @@ grid = Grid1D(
 system = StateSystem(
     grid=grid,
     automaton_type=WolframAutomaton,
-    automaton_params={'rule': 30},
+    automaton_params={'rule': 110},
     feedback_fn=None,
     seed=SEED,
 )
@@ -44,7 +45,7 @@ gui = InteractiveGUI(
     max_generations=MAX_GENERATIONS,
     plot_type='standard',
     params={
-        'Rule': 30,
+        'Rule': 110,
         'Grid': GRID_SIZE,
         'Initial': 'single_center',
         'Boundary': 'periodic',
@@ -52,7 +53,8 @@ gui = InteractiveGUI(
     figsize=(16, 9),
     interval=60,
     view_window=80,
+    save_dir=os.path.dirname(os.path.abspath(__file__)),
 )
 
-print("Rule 30 — use Start/Pause, Step, Reset to control the simulation.")
+print("Rule 110 — use Start/Pause, Step, Reset to control the simulation.")
 gui.show()
