@@ -71,6 +71,7 @@ class InteractiveGUI:
         plot_type: str = 'standard',
         n_states: Optional[int] = None,
         params: Optional[Dict[str, Any]] = None,
+        arm_labels: Optional[list] = None,
         figsize=(14, 7),
         interval: int = 80,
         view_window: int = 80,
@@ -82,6 +83,7 @@ class InteractiveGUI:
         self._cla_mode = n_states is not None
         self.plot_type = plot_type if self._cla_mode else 'standard'
         self.params = params or {}
+        self._arm_labels = arm_labels or ['0  (OFF)', '1  (ON)']
         self.figsize = figsize
         self.interval = interval
         self._view_window = view_window
@@ -115,8 +117,11 @@ class InteractiveGUI:
         self._buf_std[gen] = states.astype(np.float32)
         if self._cla_mode:
             for i in range(self._grid_size):
-                cs = states[i]
                 ta = self.system.automata[i]
+                cs = ta.get_arm()  # arm = which action/rule the TA chose;
+                                   # for StateSystem arm == grid state (no change);
+                                   # for RuleSystem arm is the rule index, which
+                                   # can differ from the resulting cell state.
                 p  = ta.get_position()
                 intensity = p / (self.n_states - 1) if self.n_states > 1 else 1.0
                 if cs == 0:
@@ -154,22 +159,26 @@ class InteractiveGUI:
         if not self.params:
             return
 
+        # Two left-aligned columns (odd/even items) so long values do not overlap.
+        # A fixed multi-column grid with ha='center' squeezed short labels together.
         items = list(self.params.items())
-        n = len(items)
-        cols = min(5, n)
-        rows = (n + cols - 1) // cols
+        left_col = items[0::2]
+        right_col = items[1::2]
+        nrows = max(len(left_col), len(right_col), 1)
+        y_lo, y_hi = 0.06, 0.94
 
-        for idx, (k, v) in enumerate(items):
-            col = idx % cols
-            row = idx // cols
-            x = (col + 0.5) / cols
-            y = 1.0 - (row + 0.5) / rows
-            card_ax.text(
-                x, y, f'{k}:  {v}',
-                ha='center', va='center',
-                fontsize=8.5, fontfamily='monospace',
-                transform=card_ax.transAxes,
-            )
+        def _place(column, x0):
+            for i, (k, v) in enumerate(column):
+                y = y_hi - (i + 0.5) / nrows * (y_hi - y_lo)
+                card_ax.text(
+                    x0, y, f'{k}:  {v}',
+                    ha='left', va='center',
+                    fontsize=8.5, fontfamily='monospace',
+                    transform=card_ax.transAxes,
+                )
+
+        _place(left_col, 0.02)
+        _place(right_col, 0.52)
 
     def _draw_legend(self, leg_ax) -> None:
         """Fill the legend axes based on the current plot_type."""
@@ -244,8 +253,8 @@ class InteractiveGUI:
         _tkw = dict(ha='center', va='center', fontsize=7.5, fontweight='bold',
                     bbox=dict(boxstyle='round,pad=0.15', facecolor='white',
                               alpha=0.55, edgecolor='none'))
-        leg_ax.text(bar_x + bar_w / 2, (bar_top + mid_y) / 2, '1\n(ON)',  **_tkw)
-        leg_ax.text(bar_x + bar_w / 2, (mid_y + bar_bot) / 2, '0\n(OFF)', **_tkw)
+        leg_ax.text(bar_x + bar_w / 2, (bar_top + mid_y) / 2, self._arm_labels[1], **_tkw)
+        leg_ax.text(bar_x + bar_w / 2, (mid_y + bar_bot) / 2, self._arm_labels[0], **_tkw)
 
     def _draw_legend_standard(self, leg_ax) -> None:
         """Simple white / black patches for B&W view."""
@@ -312,11 +321,6 @@ class InteractiveGUI:
         if suffix:
             name += f'_{suffix}'
         return name + '.png'
-
-    def _build_title(self) -> str:
-        """Short axes title — params live in the card, not here."""
-        return ('TA-Augmented Space-Time Diagram'
-                if self.plot_type == 'augmented' else 'Space-Time Diagram')
 
     # ------------------------------------------------------------------
     # Public entry point
@@ -414,11 +418,8 @@ class InteractiveGUI:
         ax.set_ylabel('Generation', fontsize=11)
         ax.set_xlim(-0.5, self._grid_size - 0.5)
         ax.set_ylim(self._view_window - 0.5, -0.5)
-        ax.set_title(f'{self._build_title()}    [Gen 0]', fontsize=10)
 
         def _redraw():
-            ax.set_title(
-                f'{self._build_title()}    [Gen {self._current_gen}]', fontsize=10)
             mpl_canvas.draw_idle()
 
         def _refresh(view_top: Optional[int] = None) -> None:
@@ -593,11 +594,8 @@ class InteractiveGUI:
         ax.set_ylabel('Generation', fontsize=11)
         ax.set_xlim(-0.5, self._grid_size - 0.5)
         ax.set_ylim(self._view_window - 0.5, -0.5)
-        ax.set_title(f'{self._build_title()}    [Gen 0]', fontsize=10)
 
         def _redraw():
-            ax.set_title(
-                f'{self._build_title()}    [Gen {self._current_gen}]', fontsize=10)
             fig.canvas.draw_idle()
 
         def _refresh() -> None:
@@ -750,9 +748,6 @@ class InteractiveGUI:
         sax.imshow(buf[:n], **_imkw)
         sax.set_xlabel('Cell Position', fontsize=9)
         sax.set_ylabel('Generation',    fontsize=9)
-        title = ('TA-Augmented Space-Time Diagram'
-                 if plot_type == 'augmented' else 'Space-Time Diagram')
-        sax.set_title(title, fontsize=9)
 
         # Temporarily set plot_type so legend/card helpers render correctly
         _saved = self.plot_type
