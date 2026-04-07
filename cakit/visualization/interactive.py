@@ -8,6 +8,7 @@ Controls: Start/Pause · Step · Reset · Save · [View: B&W / Color — CLA onl
 """
 
 import os
+from datetime import datetime
 from typing import Optional, Dict, Any
 
 import numpy as np
@@ -29,8 +30,9 @@ class InteractiveGUI:
 
     Layout
     ------
-    A params card sits above the diagram showing all experiment parameters.
-    A legend strip on the right explains the colour encoding:
+    The machine-type line (CA vs CLA) sits **above** the diagram; the params
+    card sits **below** it.  A legend strip on the right aligns with the
+    diagram only.
       - CA mode: white = 0 (OFF), black = 1 (ON)
       - CLA augmented: gradient bars for state 0 (blue) and state 1 (red),
         dark = confident (deep in arm), light = uncertain (near boundary)
@@ -62,6 +64,11 @@ class InteractiveGUI:
         Rows visible at once.
     save_dir : str, optional
         Directory where saved images are written.  Defaults to cwd.
+    machine_label : str, optional
+        Short description of the model (e.g. ``'CLA (Tsetlin)'``), shown in the
+        strip **above** the space-time diagram.  If omitted,
+        defaults to *Cellular automaton (CA)* when ``n_states`` is unset, and
+        *CLA (Tsetlin automaton per cell)* in CLA mode.
     """
 
     def __init__(
@@ -76,6 +83,7 @@ class InteractiveGUI:
         interval: int = 80,
         view_window: int = 80,
         save_dir: Optional[str] = None,
+        machine_label: Optional[str] = None,
     ):
         self.system = system
         self.max_generations = max_generations
@@ -83,6 +91,7 @@ class InteractiveGUI:
         self._cla_mode = n_states is not None
         self.plot_type = plot_type if self._cla_mode else 'standard'
         self.params = params or {}
+        self._machine_label = machine_label
         self._arm_labels = arm_labels or ['0  (OFF)', '1  (ON)']
         self.figsize = figsize
         self.interval = interval
@@ -179,6 +188,29 @@ class InteractiveGUI:
 
         _place(left_col, 0.02)
         _place(right_col, 0.52)
+
+    def _machine_header_text(self) -> str:
+        """One-line model name for the header strip (CA vs CLA, optional override)."""
+        if self._machine_label is not None:
+            return self._machine_label
+        if not self._cla_mode:
+            return 'Cellular automaton (CA)'
+        return 'CLA (Tsetlin automaton per cell)'
+
+    def _draw_machine_header(self, ax_m) -> None:
+        """Strip above the diagram: model type only (figure title)."""
+        ax_m.clear()
+        ax_m.set_xlim(0, 1)
+        ax_m.set_ylim(0, 1)
+        ax_m.set_axis_off()
+        ax_m.set_facecolor('#eceff1')
+        ax_m.axhline(0, color='#cfd8dc', linewidth=0.9, clip_on=False)
+        ax_m.text(
+            0.5, 0.5, self._machine_header_text(),
+            ha='center', va='center',
+            fontsize=9, fontweight='bold', color='#37474f',
+            transform=ax_m.transAxes,
+        )
 
     def _draw_legend(self, leg_ax) -> None:
         """Fill the legend axes based on the current plot_type."""
@@ -317,6 +349,8 @@ class InteractiveGUI:
             val = re.sub(r'[^a-z0-9]', '', str(v).lower())
             parts.append(f'{key}{val}')
         parts.append(f'gen{self._current_gen}')
+        # Wall-clock stamp so repeated saves with the same params do not overwrite.
+        parts.append(datetime.now().strftime('%Y%m%d_%H%M%S_%f'))
         name = 'spacetime_' + '_'.join(parts)
         if suffix:
             name += f'_{suffix}'
@@ -355,14 +389,15 @@ class InteractiveGUI:
         fig.patch.set_facecolor('#efefef')
 
         # ── axes layout (Tk: buttons are outside the figure) ─────────
-        # params card — narrower than the diagram, centred above it
-        ax_card   = fig.add_axes([0.11, 0.88, 0.66, 0.09])
-        # main plot — leaves gap on the right for legend
-        ax        = fig.add_axes([0.07, 0.05, 0.74, 0.80])
-        # legend strip on the right
-        ax_legend = fig.add_axes([0.83, 0.05, 0.15, 0.80])
+        # Top: machine strip → diagram + legend; bottom: params card.
+        # Large gap under diagram so x-axis label/ticks sit above the params card.
+        ax_machine = fig.add_axes([0.11, 0.88, 0.66, 0.05])
+        ax         = fig.add_axes([0.07, 0.30, 0.74, 0.55])
+        ax_legend  = fig.add_axes([0.83, 0.30, 0.15, 0.55])
+        ax_card    = fig.add_axes([0.11, 0.06, 0.66, 0.09])
 
         self._draw_params_card(ax_card)
+        self._draw_machine_header(ax_machine)
         self._draw_legend(ax_legend)
 
         # ── canvas + scroll slider ────────────────────────────────────
@@ -414,7 +449,7 @@ class InteractiveGUI:
             _imkw.update(cmap='gray_r', vmin=0, vmax=1)
 
         im = ax.imshow(self._display[:1], **_imkw)
-        ax.set_xlabel('Cell Position', fontsize=11)
+        ax.set_xlabel('Cell Position', fontsize=11, labelpad=8)
         ax.set_ylabel('Generation', fontsize=11)
         ax.set_xlim(-0.5, self._grid_size - 0.5)
         ax.set_ylim(self._view_window - 0.5, -0.5)
@@ -549,12 +584,13 @@ class InteractiveGUI:
         fig = plt.figure(figsize=self.figsize)
 
         # ── axes layout (MPL: buttons live inside the figure at bottom) ──
-        # params card — narrower than the diagram, centred above it
-        ax_card   = fig.add_axes([0.11, 0.88, 0.66, 0.09])
-        ax        = fig.add_axes([0.07, 0.17, 0.74, 0.68])
-        ax_legend = fig.add_axes([0.83, 0.17, 0.15, 0.68])
+        ax_machine = fig.add_axes([0.11, 0.86, 0.66, 0.05])
+        ax         = fig.add_axes([0.07, 0.40, 0.74, 0.43])
+        ax_legend  = fig.add_axes([0.83, 0.40, 0.15, 0.43])
+        ax_card    = fig.add_axes([0.11, 0.18, 0.66, 0.09])
 
         self._draw_params_card(ax_card)
+        self._draw_machine_header(ax_machine)
         self._draw_legend(ax_legend)
 
         # ── buttons ───────────────────────────────────────────────────
@@ -590,7 +626,7 @@ class InteractiveGUI:
             _imkw.update(cmap='gray_r', vmin=0, vmax=1)
 
         im = ax.imshow(self._display[:1], **_imkw)
-        ax.set_xlabel('Cell Position', fontsize=11)
+        ax.set_xlabel('Cell Position', fontsize=11, labelpad=8)
         ax.set_ylabel('Generation', fontsize=11)
         ax.set_xlim(-0.5, self._grid_size - 0.5)
         ax.set_ylim(self._view_window - 0.5, -0.5)
@@ -685,7 +721,7 @@ class InteractiveGUI:
                 buf: Optional[np.ndarray] = None,
                 plot_type: Optional[str] = None) -> None:
         """
-        Save a full-layout image (params card + space-time diagram + legend)
+        Save a full-layout image (machine header + diagram + legend + params card)
         to *path* using a standalone Agg figure.
 
         Parameters
@@ -712,13 +748,15 @@ class InteractiveGUI:
         diag_h = max(3.0, n               * px / dpi)
         leg_w  = 1.6   # legend strip
         card_h = 0.65  # params card height
+        machine_h = 0.32  # machine-type strip above diagram
         # fixed margins
         ml, mr, mb, mt = 0.70, 0.10, 0.40, 0.20
-        gap_cl = 0.12  # gap between card and diagram
+        gap_cb = 0.58  # params card → diagram: room for x-axis label + tick labels
+        gap_dm = 0.06  # diagram top → machine bottom
         gap_dl = 0.10  # gap between diagram and legend
 
         total_w = ml + diag_w + gap_dl + leg_w + mr
-        total_h = mt + card_h + gap_cl + diag_h + mb
+        total_h = mt + machine_h + gap_dm + diag_h + gap_cb + card_h + mb
 
         sfig = Figure(figsize=(total_w, total_h), dpi=dpi)
         FigureCanvasAgg(sfig)
@@ -727,18 +765,18 @@ class InteractiveGUI:
             """Convert inch coords to normalised [0,1] figure coords."""
             return [x / total_w, y / total_h, w / total_w, h / total_h]
 
-        # diagram axes
-        sax = sfig.add_axes(_norm(ml, diag_w, mb, diag_h))
-
-        # legend axes (right of diagram)
-        leg_ax = sfig.add_axes(
-            _norm(ml + diag_w + gap_dl, leg_w - mr, mb, diag_h))
-
-        # params card (narrower than diagram, centred above it)
+        # Vertical stack (bottom → top): params card, diagram, machine strip
         card_inset = 0.10
-        card_ax = sfig.add_axes(
-            _norm(ml + card_inset, diag_w - 2*card_inset,
-                  mb + diag_h + gap_cl, card_h))
+        card_w = diag_w - 2 * card_inset
+        card_y0 = mb
+        diag_y0 = mb + card_h + gap_cb
+        machine_y0 = mb + card_h + gap_cb + diag_h + gap_dm
+
+        sax = sfig.add_axes(_norm(ml, diag_w, diag_y0, diag_h))
+        leg_ax = sfig.add_axes(
+            _norm(ml + diag_w + gap_dl, leg_w - mr, diag_y0, diag_h))
+        machine_ax = sfig.add_axes(_norm(ml + card_inset, card_w, machine_y0, machine_h))
+        card_ax = sfig.add_axes(_norm(ml + card_inset, card_w, card_y0, card_h))
 
         # ── draw content ─────────────────────────────────────────────
         _imkw = dict(aspect='auto', interpolation='nearest', origin='upper')
@@ -746,13 +784,14 @@ class InteractiveGUI:
             _imkw.update(cmap='gray_r', vmin=0, vmax=1)
 
         sax.imshow(buf[:n], **_imkw)
-        sax.set_xlabel('Cell Position', fontsize=9)
+        sax.set_xlabel('Cell Position', fontsize=9, labelpad=6)
         sax.set_ylabel('Generation',    fontsize=9)
 
         # Temporarily set plot_type so legend/card helpers render correctly
         _saved = self.plot_type
         self.plot_type = plot_type
         self._draw_legend(leg_ax)
+        self._draw_machine_header(machine_ax)
         self._draw_params_card(card_ax)
         self.plot_type = _saved
 
