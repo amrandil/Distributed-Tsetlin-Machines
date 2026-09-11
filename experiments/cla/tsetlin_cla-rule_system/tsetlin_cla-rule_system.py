@@ -31,7 +31,7 @@ save_dir_for_script = _cc.save_dir_for_script
 # --- Experiment parameters (all explicit; edit here) ----------------------
 cfg = RuleSystemExperimentConfig(
     # Grid
-    grid_size=101,
+    grid_size=301,
     neighbourhood_radius=1,
     boundary="periodic",
     initial_grid="random",
@@ -39,17 +39,17 @@ cfg = RuleSystemExperimentConfig(
     n_states=10,
     automaton_initial_state="random",
     # Feedback  (minority / agreement / global — see config_common.FeedbackKind)
-    feedback="minority",
+    feedback="agreement",
     feedback_neighbour_radius=1,
     global_target_state=1,
     feedback_radius=1,
     # Reproducibility
     seed=42,
     # Rule selection (this experiment only)
-    rules=(8, 90),
-    arm_labels=("Rule 8", "Rule 90"),
+    rules=(4, 30),
+    arm_labels=("Rule 4", "Rule 30"),
     # GUI / run
-    max_generations=400,
+    max_generations=600,
     plot_type="augmented",
     interval=80,
     view_window=80,

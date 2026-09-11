@@ -30,6 +30,7 @@ htmlcov/
 # Generated outputs
 *.png
 *.csv
+experiments/results_*/
 
 # PDFs (excluding project documentation)
 # !Distributed_Tsetlin_Machines.pdf  # Uncomment to track the paper

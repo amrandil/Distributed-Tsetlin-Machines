@@ -49,16 +49,15 @@ save_dir_for_script = _cc.save_dir_for_script
 #   * "fixed"
 #   * boundary_value=1
 cfg = WolframElementaryConfig(
-    rule=90,
-    grid_size=201,
+    rule=110,
+    grid_size=301,
     neighbourhood_radius=1,
     boundary="periodic",
     # boundary_value=1,
-    # initial_grid="random",
-    initial_grid=line_from_binary_string(
-        "10000000000000000001", 201, align="center"),
+    initial_grid="random",
+    # initial_grid=line_from_binary_string( "10000000000000000001", 201, align="center"),
     seed=42,
-    max_generations=400,
+    max_generations=1000,
     plot_type="standard",
     interval=60,
     view_window=80,
