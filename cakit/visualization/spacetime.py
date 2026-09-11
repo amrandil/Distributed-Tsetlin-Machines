@@ -9,6 +9,7 @@ from typing import Optional, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.patches import Patch
 
 
 class SpaceTimePlot:
@@ -230,6 +231,89 @@ class SpaceTimePlot:
         else:
             plt.close()
     
+    def plot_rule_choice(
+        self,
+        rule_labels: Tuple[str, str],
+        save_path: Optional[str] = None,
+        show: bool = True,
+        params: Optional[dict] = None,
+    ) -> None:
+        """
+        Plot a rule-choice space-time diagram colored by which rule each cell selected.
+
+        Each cell-timestep pixel is colored by the arm (rule) chosen by the TA:
+        arm 0 → blue, arm 1 → orange. Legend entries show the full rule label
+        including Wolfram class, e.g. 'Rule 30 · Class III (chaotic)'.
+
+        Args:
+            rule_labels: Two-element tuple of label strings for arm 0 and arm 1.
+            save_path: Optional path to save the figure.
+            show: Whether to display the plot.
+            params: Optional dict of experiment parameters shown below the plot.
+
+        Raises:
+            ValueError: If ta_state_history was not provided at construction time.
+        """
+        if self.ta_state_history is None:
+            raise ValueError(
+                "plot_rule_choice requires ta_state_history. "
+                "Provide it during initialization."
+            )
+
+        # Derive arm-choice matrix: 0 = arm 0 (rule A), 1 = arm 1 (rule B)
+        arm_choices = (self.ta_state_history - 1) // self.n_states  # (T, G)
+
+        # Colorblind-friendly two-color palette
+        color_a = np.array([0.208, 0.475, 0.694])  # blue
+        color_b = np.array([0.894, 0.420, 0.125])  # orange
+
+        # Build RGB image: shape (T, G, 3)
+        image = np.where(arm_choices[:, :, np.newaxis] == 0, color_a, color_b)
+
+        fig, ax = plt.subplots(figsize=self.figsize)
+        ax.imshow(image, interpolation="nearest", aspect="auto")
+        ax.set_xlabel("Cell Position", fontsize=12)
+        ax.set_ylabel("Generation", fontsize=12)
+        ax.set_title("Rule-Choice Space-Time Diagram", fontsize=14, fontweight="bold")
+
+        legend_elements = [
+            Patch(facecolor=color_a, label=rule_labels[0]),
+            Patch(facecolor=color_b, label=rule_labels[1]),
+        ]
+        ax.legend(
+            handles=legend_elements,
+            loc="upper right",
+            fontsize=10,
+            framealpha=0.9,
+        )
+
+        plt.tight_layout()
+
+        if params:
+            param_text = self._format_params(params)
+            fig.text(
+                0.5, -0.02, param_text,
+                ha="center", va="top",
+                fontsize=10,
+                family="monospace",
+                bbox=dict(
+                    boxstyle="round,pad=0.8",
+                    facecolor="lightgray",
+                    edgecolor="black",
+                    linewidth=1.5,
+                    alpha=0.9,
+                ),
+            )
+            plt.subplots_adjust(bottom=0.12)
+
+        if save_path:
+            plt.savefig(save_path, dpi=150, bbox_inches="tight")
+
+        if show:
+            plt.show()
+        else:
+            plt.close()
+
     def _build_ta_augmented_image(self) -> np.ndarray:
         """
         Build the TA-augmented image array.

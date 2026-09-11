@@ -9,7 +9,7 @@ setup(
     version="0.1.0",
     description="Cellular Automata Kit - A framework for CA, LA, and CLA systems",
     author="Amr Kandil",
-    packages=find_packages(),
+    packages=find_packages(include=("cakit", "cakit.*", "experiments", "experiments.*")),
     install_requires=[
         "numpy>=1.24.0",
         "matplotlib>=3.5.0",
