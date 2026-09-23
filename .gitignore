@@ -30,8 +30,16 @@ htmlcov/
 # Generated outputs
 *.png
 *.csv
-experiments/results_*/
 experiments/catalog/site/
+
+# CLA pair scores (not diagrams). Parent dirs must be un-ignored for
+# these exceptions to apply.
+experiments/results_*/
+!experiments/results_*/
+!experiments/results_*/**/
+!experiments/results_*/**/*.json
+!experiments/results_*/summary.csv
+experiments/results_*/**/*.xlsx
 
 # PDFs (excluding project documentation)
 # !Distributed_Tsetlin_Machines.pdf  # Uncomment to track the paper
