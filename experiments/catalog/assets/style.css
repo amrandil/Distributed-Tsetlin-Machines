@@ -207,7 +207,47 @@ table.metrics th, table.metrics td {
   border-bottom: 1px solid var(--line);
 }
 
-table.metrics th { color: var(--muted); font-weight: 550; width: 14rem; }
+table.metrics th {
+  color: var(--muted);
+  font-weight: 550;
+  width: 14rem;
+}
+
+table.metrics th .metric-name { margin-right: 0.35rem; }
+
+.info-btn {
+  width: 0.95rem;
+  height: 0.95rem;
+  padding: 0;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: italic 650 0.62rem/1 Georgia, serif;
+  vertical-align: 0.05rem;
+  cursor: help;
+}
+
+.info-btn:hover,
+.info-btn:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  outline: none;
+}
+
+.metric-tip {
+  position: fixed;
+  z-index: 30;
+  max-width: 22rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  box-shadow: 0 8px 24px rgba(22, 21, 19, 0.28);
+  pointer-events: none;
+}
 
 .grid-cards {
   display: grid;
@@ -300,11 +340,28 @@ table.metrics th { color: var(--muted); font-weight: 550; width: 14rem; }
 
 .search {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.5rem;
   margin: 0 0 1rem;
 }
 
-.search input, .search select {
+.browse-count {
+  font-size: 0.95rem;
+  font-weight: 450;
+  color: var(--muted);
+}
+
+.feedback-counts {
+  display: flex;
+  gap: 1.6rem;
+  margin: 0.15rem 0 1rem;
+  font-size: 1.05rem;
+}
+
+.feedback-counts strong { font-weight: 650; }
+
+.search input[type="search"], .search select, .multi-btn {
   font: inherit;
   padding: 0.45rem 0.6rem;
   border: 1px solid var(--line);
@@ -312,7 +369,43 @@ table.metrics th { color: var(--muted); font-weight: 550; width: 14rem; }
   color: var(--ink);
 }
 
-.search input { flex: 1; min-width: 12rem; }
+.multi { position: relative; }
+
+.multi-btn {
+  cursor: pointer;
+  text-align: left;
+  max-width: 16rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.multi-btn[aria-expanded="true"] { border-color: var(--ink); }
+
+.multi-panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  min-width: 100%;
+  padding: 0.35rem 0;
+  background: var(--card);
+  border: 1px solid var(--ink);
+  box-shadow: 0 8px 20px rgba(22, 21, 19, 0.12);
+}
+
+.multi-panel label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.28rem 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.multi-panel label:hover { background: var(--chip); }
+
+.search input[type="search"] { flex: 1; min-width: 12rem; }
 
 .results-list a {
   display: block;

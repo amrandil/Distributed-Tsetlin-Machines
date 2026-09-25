@@ -56,6 +56,19 @@ AUDIT_PATH = EXPERIMENTS / "analysis" / "visual_taxonomy_audit.csv"
 CLASS_PAIRS = ["I_x_II", "I_x_III", "I_x_IV",
                "II_x_III", "II_x_IV", "III_x_IV"]
 FEEDBACKS = ("majority", "minority")
+LABEL_ORDER = ("fixed", "cycle", "drift", "near_cycle", "aperiodic")
+DOMINATION_ORDER = ("dominate_complete", "dominate", "coexist", "neutral")
+SETTLE_ORDER = ("early", "late", "tail_only", "never")
+# Final A/B boundary count on the ring. Near 100 is salt-and-pepper.
+WALL_BINS = (
+    ("0", "0", 0, 0),
+    ("1-10", "1–10", 1, 10),
+    ("11-30", "11–30", 11, 30),
+    ("31-60", "31–60", 31, 60),
+    ("61-80", "61–80", 61, 80),
+    ("81-100", "81–100", 81, 100),
+    ("101+", "101+", 101, 10**9),
+)
 
 NEIGHBORHOODS = (
     (1, 1, 1),
@@ -332,6 +345,7 @@ def scan_pairs() -> List[Dict[str, object]]:
                         "domination": str(metrics.get("domination") or ""),
                         "dominant_rule": str(metrics.get("dominant_rule") or ""),
                         "settle": str(metrics.get("settle") or ""),
+                        "arm_walls_final": metrics.get("arm_walls_final"),
                         "taxonomy": tag.get("proposed_primary", ""),
                         "motif": tag.get("motif", ""),
                         "your_tag": tag.get("your_tag", ""),
@@ -346,7 +360,7 @@ def scan_pairs() -> List[Dict[str, object]]:
 # ---- HTML --------------------------------------------------------------------
 
 def _asset(depth: int, name: str) -> str:
-    return f"{'../' * depth}assets/{name}?v=8"
+    return f"{'../' * depth}assets/{name}?v=15"
 
 
 def _rule_img(depth: int, rule: int, kind: str) -> str:
@@ -390,6 +404,7 @@ def _page(title: str, body: str, depth: int, active: str = "") -> str:
         {nav("Majority", prefix + "majority/index.html", "majority")}
         {nav("Minority", prefix + "minority/index.html", "minority")}
         {nav("Rules", prefix + "rules/index.html", "rules")}
+        {nav("Browse", prefix + "browse.html", "browse")}
         {nav("Highlights", prefix + "highlights.html", "highlights")}
       </nav>
     </header>
@@ -487,19 +502,29 @@ METRIC_KEYS = (
     "residual_unshifted",
     "min_shift_hamming",
     "min_shift_lag",
-    "domination",
-    "dominant_rule",
-    "rule_share_a",
-    "rule_share_b",
-    "settle",
-    "settled_at",
-    "late_label",
-    "late_period",
     "mean_hamming",
     "std_hamming",
     "mean_hamming_after_burn_in",
     "burn_in",
     "max_lag",
+    "domination",
+    "domination_occupancy",
+    "dominant_rule",
+    "rule_share_a",
+    "rule_share_b",
+    "decisive_frac",
+    "decisive_share_a",
+    "settle",
+    "settle_raw",
+    "settled_at",
+    "late_label",
+    "late_period",
+    "arm_flip_rate",
+    "freeze_gen",
+    "ta_confidence",
+    "arm_walls_initial",
+    "arm_walls_final",
+    "same_arm_as_initial",
     "grid_size",
     "generations",
     "feedback",
@@ -510,9 +535,7 @@ METRIC_KEYS = (
 
 def _metrics_table(metrics: Dict[str, object]) -> str:
     if not metrics:
-        return (
-            '<p class="missing">No metrics.json for this run.</p>'
-        )
+        return '<h3>Metrics</h3><p class="missing">No metrics.json for this run.</p>'
     rows = []
     for key in METRIC_KEYS:
         if key not in metrics:
@@ -524,8 +547,14 @@ def _metrics_table(metrics: Dict[str, object]) -> str:
             val_s = f"{val:.6g}"
         else:
             val_s = str(val)
-        rows.append(f"<tr><th>{escape(key)}</th><td>{escape(val_s)}</td></tr>")
-    return "<table class='metrics'>" + "".join(rows) + "</table>"
+        rows.append(
+            f'<tr data-metric="{escape(key)}"><th>'
+            f'<span class="metric-name">{escape(key)}</span>'
+            f'<button type="button" class="info-btn" data-metric-tip="{escape(key)}" '
+            f'aria-label="Explain {escape(key)}">i</button>'
+            f'</th><td>{escape(val_s)}</td></tr>'
+        )
+    return '<h3>Metrics</h3><table class="metrics">' + "".join(rows) + "</table>"
 
 
 def _write(path: Path, html: str) -> None:
@@ -619,7 +648,6 @@ def write_pair_page(
           {_img(_result_img(depth, pair, "lag_hamming.png"), "Lag Hamming", bool(pair["has_lag_hamming"]))}
         </div>
         <div class="plot-card">
-          <h3>Metrics</h3>
           {_metrics_table(pair.get("metrics") or {})}
         </div>
       </div>
@@ -652,6 +680,79 @@ def write_pair_page(
     )
 
 
+def _walls_bin(value: object) -> str:
+    if value is None or value == "":
+        return ""
+    try:
+        n = int(float(value))
+    except (TypeError, ValueError):
+        return ""
+    for key, _label, lo, hi in WALL_BINS:
+        if lo <= n <= hi:
+            return key
+    return ""
+
+
+def _walls_filter(items: Sequence[Dict[str, object]]) -> str:
+    present = {_walls_bin(p.get("arm_walls_final")) for p in items}
+    present.discard("")
+    keys = [key for key, _label, _lo, _hi in WALL_BINS if key in present]
+    labels = {key: label for key, label, _lo, _hi in WALL_BINS}
+    return _filter_select("list-walls", "All arm walls", keys, labels)
+
+
+def _class_label(class_pair: str) -> str:
+    return class_pair.replace("_x_", " × ")
+
+
+def _axis_values(items: Sequence[Dict[str, object]], key: str, preferred: Sequence[str]) -> List[str]:
+    present = {str(p.get(key) or "") for p in items}
+    present.discard("")
+    ordered = [v for v in preferred if v in present]
+    ordered.extend(sorted(present.difference(preferred)))
+    return ordered
+
+
+def _filter_select(
+    elem_id: str,
+    blank: str,
+    values: Sequence[str],
+    labels: Optional[Dict[str, str]] = None,
+) -> str:
+    if not values:
+        return ""
+    boxes = []
+    for value in values:
+        shown = labels.get(value, value) if labels else value
+        boxes.append(
+            f'<label><input type="checkbox" value="{escape(value)}">{escape(shown)}</label>'
+        )
+    return (
+        f'<div class="multi" id="{elem_id}" data-blank="{escape(blank)}">'
+        f'<button type="button" class="multi-btn" aria-expanded="false" aria-haspopup="true">'
+        f'{escape(blank)}</button>'
+        f'<div class="multi-panel" hidden>{"".join(boxes)}</div></div>'
+    )
+
+
+def _pair_card_attrs(pair: Dict[str, object], *, class_pair: bool = False) -> str:
+    hay = (
+        f"{pair['rule_a']} {pair['rule_b']} {pair['class_pair']} {pair['label']} "
+        f"{pair.get('domination')} {pair.get('settle')} {pair['taxonomy']}"
+    ).lower()
+    if pair.get("highlighted"):
+        hay += " highlighted star"
+    attrs = (
+        f' data-pair="{escape(hay)}" data-label="{escape(str(pair["label"]))}"'
+        f' data-domination="{escape(str(pair.get("domination") or ""))}"'
+        f' data-settle="{escape(str(pair.get("settle") or ""))}"'
+        f' data-walls="{escape(_walls_bin(pair.get("arm_walls_final")))}"'
+    )
+    if class_pair:
+        attrs += f' data-class-pair="{escape(str(pair["class_pair"]))}"'
+    return attrs
+
+
 def _group(pairs: Sequence[Dict[str, object]], feedback: str, class_pair: Optional[str] = None) -> List[Dict[str, object]]:
     out = [p for p in pairs if p["feedback"] == feedback]
     if class_pair is not None:
@@ -661,43 +762,23 @@ def _group(pairs: Sequence[Dict[str, object]], feedback: str, class_pair: Option
 
 def write_listing(feedback: str, class_pair: str, items: Sequence[Dict[str, object]]) -> None:
     depth = 2
-    labels = sorted({str(p["label"]) for p in items if p["label"]})
-    dominations = sorted({str(p["domination"]) for p in items if p.get("domination")})
-    settles = sorted({str(p["settle"]) for p in items if p.get("settle")})
-
-    def _options(values: Sequence[str]) -> str:
-        return "".join(f'<option value="{escape(v)}">{escape(v)}</option>' for v in values)
-
-    label_filter = (
-        f'<select id="list-label"><option value="">All Hamming labels</option>{_options(labels)}</select>'
-        if labels else ""
+    label_filter = _filter_select(
+        "list-label", "All Hamming labels", _axis_values(items, "label", LABEL_ORDER)
     )
-    domination_filter = (
-        f'<select id="list-domination"><option value="">All domination</option>{_options(dominations)}</select>'
-        if dominations else ""
+    domination_filter = _filter_select(
+        "list-domination", "All domination", _axis_values(items, "domination", DOMINATION_ORDER)
     )
-    settle_filter = (
-        f'<select id="list-settle"><option value="">All settle</option>{_options(settles)}</select>'
-        if settles else ""
+    settle_filter = _filter_select(
+        "list-settle", "All settle", _axis_values(items, "settle", SETTLE_ORDER)
     )
+    walls_filter = _walls_filter(items)
     cards = []
     for p in items:
         href = f"{_pair_dir_name(int(p['rule_a']), int(p['rule_b']))}.html"
         extra = " · ".join(
             str(bit) for bit in (p["label"], p.get("domination"), p.get("settle"), p["taxonomy"]) if bit
         )
-        hay = (
-            f"{p['rule_a']} {p['rule_b']} {p['label']} {p.get('domination')} "
-            f"{p.get('settle')} {p['taxonomy']}"
-        ).lower()
-        if p.get("highlighted"):
-            hay += " highlighted star"
-        attrs = (
-            f' data-pair="{escape(hay)}" data-label="{escape(str(p["label"]))}"'
-            f' data-domination="{escape(str(p.get("domination") or ""))}"'
-            f' data-settle="{escape(str(p.get("settle") or ""))}"'
-        )
-        cards.append(_gallery_card(p, href, depth, extra, attrs))
+        cards.append(_gallery_card(p, href, depth, extra, _pair_card_attrs(p)))
     n_hi = sum(1 for p in items if p.get("highlighted"))
     hi_note = f" {n_hi} highlighted." if n_hi else ""
     body = f"""
@@ -709,6 +790,7 @@ def write_listing(feedback: str, class_pair: str, items: Sequence[Dict[str, obje
       {label_filter}
       {domination_filter}
       {settle_filter}
+      {walls_filter}
       <button type="button" id="list-highlighted" class="filter-hi">★ Highlighted only</button>
       {_view_switch()}
     </div>
@@ -768,6 +850,7 @@ def write_highlights(pairs: Sequence[Dict[str, object]]) -> None:
         for p in pairs
     }
     shown = 0
+    fb_counts = {fb: 0 for fb in ("majority", "minority")}
     sections: List[str] = []
     for feedback in ("majority", "minority"):
         fb_groups = [g for g in groups if g["feedback"] == feedback]
@@ -783,17 +866,20 @@ def write_highlights(pairs: Sequence[Dict[str, object]]) -> None:
                 pair = lookup.get((feedback, int(item["rule_a"]), int(item["rule_b"])))
                 if pair is None:
                     continue
-                extra = item.get("note") or pair.get("taxonomy") or pair.get("label") or ""
+                extra = str(item.get("note") or "")
                 href = _pair_href(0, pair)
-                cards.append(_gallery_card(pair, href, 0, str(extra)))
+                cards.append(_gallery_card(pair, href, 0, extra))
                 shown += 1
+                fb_counts[feedback] += 1
             if not cards:
                 continue
             heading = str(group["class_heading"] or "")
             if heading and heading != current_class:
                 current_class = heading
                 blocks.append(f'<h3 class="hi-class">{escape(heading)}</h3>')
-            blocks.append(f'<h4 class="hi-tag">{escape(str(group["tag"]))}</h4>')
+            tag = str(group["tag"] or "")
+            if tag and tag != "Untagged":
+                blocks.append(f'<h4 class="hi-tag">{escape(tag)}</h4>')
             blocks.append(f'<div class="grid-cards">{"".join(cards)}</div>')
             blocks.append('<hr class="hi-rule">')
         if blocks and blocks[-1] == '<hr class="hi-rule">':
@@ -802,11 +888,83 @@ def write_highlights(pairs: Sequence[Dict[str, object]]) -> None:
 
     body = f"""
     <p class="pair-title">Highlights</p>
-    <p class="lede">{shown} starred pairs from highlights.md, grouped by your labels. Majority first, then minority.</p>
+    <p class="lede">{shown} starred pairs from highlights.md. Majority first, then minority.</p>
+    <p class="feedback-counts">
+      <span>Majority <strong>{fb_counts["majority"]}</strong></span>
+      <span>Minority <strong>{fb_counts["minority"]}</strong></span>
+    </p>
     <div class="search">{_view_switch()}</div>
     {"".join(f'<section class="hi-section">{sec}</section>' for sec in sections)}
     """
     _write(SITE / "highlights.html", _page("Highlights", body, 0, active="highlights"))
+
+
+def write_browse(pairs: Sequence[Dict[str, object]]) -> None:
+    depth = 0
+    class_filter = _filter_select(
+        "list-class",
+        "All class pairs",
+        CLASS_PAIRS,
+        {cp: _class_label(cp) for cp in CLASS_PAIRS},
+    )
+    label_filter = _filter_select(
+        "list-label", "All Hamming labels", _axis_values(pairs, "label", LABEL_ORDER)
+    )
+    domination_filter = _filter_select(
+        "list-domination", "All domination", _axis_values(pairs, "domination", DOMINATION_ORDER)
+    )
+    settle_filter = _filter_select(
+        "list-settle", "All settle", _axis_values(pairs, "settle", SETTLE_ORDER)
+    )
+    walls_filter = _walls_filter(pairs)
+
+    sections: List[str] = []
+    for feedback in FEEDBACKS:
+        items = _group(pairs, feedback)
+        if not items:
+            continue
+        cards: List[str] = []
+        for p in items:
+            extra = " · ".join(
+                str(bit) for bit in (
+                    _class_label(str(p["class_pair"])),
+                    p["label"],
+                    p.get("domination"),
+                    p.get("settle"),
+                    p["taxonomy"],
+                ) if bit
+            )
+            cards.append(_gallery_card(
+                p, _pair_href(depth, p), depth, extra, _pair_card_attrs(p, class_pair=True)
+            ))
+        sections.append(
+            f"""<section class="hi-section" data-feedback-section="{escape(feedback)}">
+      <h2 class="hi-feedback">{escape(feedback).title()} <span class="browse-count" data-browse-count>{len(items)}</span></h2>
+      <div class="grid-cards">{''.join(cards)}</div>
+    </section>"""
+        )
+
+    body = f"""
+    <p class="pair-title">Browse</p>
+    <p class="lede">Every cross-class pair, split by feedback. A pair stays when it matches every menu you set. Within a menu, any ticked value counts.</p>
+    <p class="feedback-counts">
+      <span>Majority <strong data-top-count="majority">{len(_group(pairs, "majority"))}</strong></span>
+      <span>Minority <strong data-top-count="minority">{len(_group(pairs, "minority"))}</strong></span>
+    </p>
+    <div class="search">
+      <input id="list-filter" type="search" placeholder="Filter by rule number…">
+      {class_filter}
+      {label_filter}
+      {domination_filter}
+      {settle_filter}
+      {walls_filter}
+      <button type="button" id="list-highlighted" class="filter-hi">★ Highlighted only</button>
+      {_view_switch()}
+    </div>
+    <p id="browse-empty" class="missing hidden">No pairs match.</p>
+    {''.join(sections)}
+    """
+    _write(SITE / "browse.html", _page("Browse", body, depth, active="browse"))
 
 
 def write_home(pairs: Sequence[Dict[str, object]]) -> None:
@@ -836,6 +994,7 @@ def write_home(pairs: Sequence[Dict[str, object]]) -> None:
       <a class="card" href="majority/index.html"><div class="k">Majority feedback</div><div class="s">{n_maj} pairs</div></a>
       <a class="card" href="minority/index.html"><div class="k">Minority feedback</div><div class="s">{n_min} pairs</div></a>
       <a class="card" href="rules/index.html"><div class="k">Elementary rules</div><div class="s">{len(UNIQUE_RULES)} unique ECAs</div></a>
+      <a class="card" href="browse.html"><div class="k">Browse</div><div class="s">Filter every pair, split by feedback</div></a>
       <a class="card" href="highlights.html"><div class="k">Highlights</div><div class="s">Starred pairs by label</div></a>
     </div>
     <section class="block" style="margin-top:1.2rem">
@@ -900,6 +1059,7 @@ def main() -> None:
     copy_assets()
     write_home(pairs)
     write_highlights(pairs)
+    write_browse(pairs)
     write_rules_index()
 
     index = {(p["feedback"], int(p["rule_a"]),
