@@ -177,7 +177,9 @@
 
   function current() {
     try {
-      return localStorage.getItem(KEY) === "color" ? "color" : "bw";
+      const saved = localStorage.getItem(KEY);
+      if (saved === "color" || saved === "decisive") return saved;
+      return "bw";
     } catch (e) {
       return "bw";
     }

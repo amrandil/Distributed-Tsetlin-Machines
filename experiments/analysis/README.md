@@ -6,7 +6,8 @@ changes how the CLA runs; it adds metrics and applies the filtering funnel.
 | Script | What it does | Writes |
 |---|---|---|
 | `fast_sim.py` | Vectorised, bit-identical replay of a pair run (grid + TA states + decisive mask). `--check` proves it matches cakit. | nothing (library + check) |
-| `axes_metrics.py` | Adds the `neutral` domination tag, the `tail_only` settle tag, and the TA-layer descriptors to every pair. | `results_<fb>/**/metrics.json`, `results_<fb>/summary.csv` (and `history.npz` with `--save-histories`) |
+| `axes_metrics.py` | Adds the `neutral` domination tag, the `tail_only` settle tag, and the TA-layer descriptors to every pair. | `results_<fb>/**/metrics.json`, `results_<fb>/summary.csv` (plus `spacetime_decisive.png` with `--plots`, `history.npz` with `--save-histories`) |
+| `decisive_plot.py` | Draws the decisive cell-step diagram in the same layout as the GUI exports. Used by `axes_metrics.py --plots`. | nothing on its own |
 | `funnel.py` | Applies the four filter stages and documents each one. | `experiments/funnel.md`, `results_<fb>/funnel.json` (and `experiments/highlights.md` with `--as-highlights`) |
 
 ## Order of operations
@@ -16,6 +17,7 @@ From the repository root:
 ```bash
 python experiments/analysis/fast_sim.py --check            # once, or after touching cakit
 python experiments/analysis/axes_metrics.py --verify-png   # both feedbacks, ~2 min
+python experiments/analysis/axes_metrics.py --plots        # decisive diagrams, ~10 min
 python experiments/analysis/funnel.py --as-highlights
 python experiments/catalog/generate.py                      # refresh the catalog
 ```

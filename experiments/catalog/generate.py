@@ -340,6 +340,7 @@ def scan_pairs() -> List[Dict[str, object]]:
                         "has_color": (pair_dir / "spacetime_color.png").exists(),
                         "has_hamming": (pair_dir / "hamming_distance.png").exists(),
                         "has_lag_hamming": (pair_dir / "lag_hamming.png").exists(),
+                        "has_decisive": (pair_dir / "spacetime_decisive.png").exists(),
                         "metrics": metrics,
                         "label": str(metrics.get("label") or ""),
                         "domination": str(metrics.get("domination") or ""),
@@ -360,7 +361,7 @@ def scan_pairs() -> List[Dict[str, object]]:
 # ---- HTML --------------------------------------------------------------------
 
 def _asset(depth: int, name: str) -> str:
-    return f"{'../' * depth}assets/{name}?v=15"
+    return f"{'../' * depth}assets/{name}?v=16"
 
 
 def _rule_img(depth: int, rule: int, kind: str) -> str:
@@ -423,6 +424,7 @@ def _view_switch(*, item: bool = False) -> str:
     return f"""<div class="{cls}" role="group" aria-label="{label}">
       <button type="button" {attr}="bw">B&amp;W</button>
       <button type="button" {attr}="color">Color</button>
+      <button type="button" {attr}="decisive">Decisive</button>
     </div>"""
 
 
@@ -436,12 +438,15 @@ def _gallery_thumb(pair: Dict[str, object], depth: int) -> str:
     bw = _result_img(depth, pair, "spacetime_bw.png") if pair["has_bw"] else ""
     color = _result_img(
         depth, pair, "spacetime_color.png") if pair["has_color"] else ""
-    src = bw or color
+    decisive = _result_img(
+        depth, pair, "spacetime_decisive.png") if pair["has_decisive"] else ""
+    src = bw or color or decisive
     if not src:
         return '<p class="missing">Missing diagrams</p>'
     return (
         f'<img class="gallery-thumb" src="{escape(src)}" '
         f'data-bw="{escape(bw)}" data-color="{escape(color)}" '
+        f'data-decisive="{escape(decisive)}" '
         f'alt="rule {pair["rule_a"]} vs {pair["rule_b"]}" loading="lazy">'
     )
 
@@ -623,8 +628,8 @@ def write_pair_page(
     pair_plots = f"""
     <section class="block">
       <h2>The pair, from a random grid</h2>
-      <p class="lede">CLA rule selection on the same 201-cell random initial condition used in the batch ({escape(str(pair['feedback']))} neighborhood feedback).</p>
-      <div class="plot-grid">
+      <p class="lede">CLA rule selection on the same 201-cell random initial condition used in the batch ({escape(str(pair['feedback']))} neighborhood feedback). Green marks decisive cell-steps: the two rules give different outputs for the neighbourhood the cell sees, so the TA's arm choice decides the next state.</p>
+      <div class="plot-grid triple">
         <div class="plot-card">
           <h3>Cell state (B&amp;W)</h3>
           {_img(_result_img(depth, pair, "spacetime_bw.png"), "pair spacetime B&W", bool(pair["has_bw"]))}
@@ -632,6 +637,10 @@ def write_pair_page(
         <div class="plot-card">
           <h3>TA rule choice (color)</h3>
           {_img(_result_img(depth, pair, "spacetime_color.png"), "pair spacetime color", bool(pair["has_color"]))}
+        </div>
+        <div class="plot-card">
+          <h3>Decisive cell-steps</h3>
+          {_img(_result_img(depth, pair, "spacetime_decisive.png"), "decisive cell-steps", bool(pair["has_decisive"]))}
         </div>
       </div>
     </section>

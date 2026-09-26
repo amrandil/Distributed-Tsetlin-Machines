@@ -1,5 +1,7 @@
 # Local Minority Feedback Function
 
+108 vs 146
+
 0 vs 62
 
 0 vs 94
@@ -535,4 +537,40 @@
 18 vs 110
 
 22 vs 110
+
+29 vs 150
+
+43 vs 150
+
+156 vs 150
+
+11 vs 105
+
+27 vs 30
+
+33 vs 60
+
+33 vs 90
+
+33 vs 105
+
+35 vs 105
+
+35 vs 146
+
+42 vs 18
+
+50 vs 30
+
+73 vs 30
+
+94 vs 90
+
+154 vs 30
+
+170 vs 30
+
+170 vs 45
+
+57 vs 41
 
