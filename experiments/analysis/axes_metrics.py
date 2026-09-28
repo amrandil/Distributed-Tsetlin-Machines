@@ -10,6 +10,7 @@ scratch and drops the fields added here).
     python experiments/analysis/axes_metrics.py --verify-png     # also compare with the PNGs
     python experiments/analysis/axes_metrics.py --save-histories # also write history.npz per pair
     python experiments/analysis/axes_metrics.py --plots          # also write spacetime_decisive.png per pair
+    python experiments/analysis/axes_metrics.py --depth-plots    # also write spacetime_depth.png per pair
 
 What it changes
 ---------------
@@ -72,6 +73,7 @@ for p in (str(REPO_ROOT), str(HERE)):
 from cakit.rules import WOLFRAM_CLASSES, get_cross_class_pairs  # noqa: E402
 from fast_sim import GENERATIONS, N_STATES, arm_of, confidence_of, simulate  # noqa: E402
 from decisive_plot import save_decisive_png  # noqa: E402
+from depth_plot import save_depth_png  # noqa: E402
 
 # ---- Parameters (keep in sync with run_cross_class_pairs.py) -----------------
 WINDOW = 100            # same as DOMINATION_WINDOW
@@ -182,7 +184,13 @@ def _plot_params(rule_a: int, rule_b: int, feedback: str) -> Dict[str, object]:
     }
 
 
-def process_feedback(feedback: str, verify_png: bool, save_histories: bool, plots: bool = False) -> None:
+def process_feedback(
+    feedback: str,
+    verify_png: bool,
+    save_histories: bool,
+    plots: bool = False,
+    depth_plots: bool = False,
+) -> None:
     results_root = EXPERIMENTS / f"results_{feedback}"
     summary_path = results_root / "summary.csv"
     if not results_root.exists():
@@ -256,6 +264,10 @@ def process_feedback(feedback: str, verify_png: bool, save_histories: bool, plot
             save_decisive_png(out_dir / "spacetime_decisive.png", run["grid"], rule_a, rule_b,
                               _plot_params(rule_a, rule_b, feedback))
 
+        if depth_plots:
+            save_depth_png(out_dir / "spacetime_depth.png", run["ta"], N_STATES,
+                           _plot_params(rule_a, rule_b, feedback))
+
         if save_histories:
             np.savez_compressed(
                 out_dir / "history.npz",
@@ -312,11 +324,14 @@ def main() -> None:
     parser.add_argument("--plots", action="store_true",
                         help="Write spacetime_decisive.png next to each pair's B&W and colour PNGs "
                              "(same layout as the GUI exports).")
+    parser.add_argument("--depth-plots", action="store_true",
+                        help="Write spacetime_depth.png (TA depth only, no arm colour) next to each "
+                             "pair's PNGs (same layout as the GUI exports).")
     args = parser.parse_args()
     feedbacks = ["majority", "minority"] if args.feedback == "both" else [args.feedback]
     for fb in feedbacks:
         print(f"== {fb}")
-        process_feedback(fb, args.verify_png, args.save_histories, args.plots)
+        process_feedback(fb, args.verify_png, args.save_histories, args.plots, args.depth_plots)
 
 
 if __name__ == "__main__":

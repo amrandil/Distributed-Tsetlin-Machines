@@ -1,65 +1,6 @@
 (function () {
-  const search = document.getElementById("catalog-search");
-  const feedback = document.getElementById("catalog-feedback");
-  const klass = document.getElementById("catalog-class");
-  const out = document.getElementById("catalog-results");
-  if (!search || !out || typeof CATALOG === "undefined") return;
-
-  function href(item) {
-    return item.feedback + "/" + item.class_pair + "/rule" + item.rule_a + "_vs_rule" + item.rule_b + ".html";
-  }
-
-  function render() {
-    const q = (search.value || "").trim().toLowerCase();
-    const fb = feedback ? feedback.value : "";
-    const cp = klass ? klass.value : "";
-    const nums = q.match(/\d+/g);
-    const rows = CATALOG.filter(function (item) {
-      if (fb && item.feedback !== fb) return false;
-      if (cp && item.class_pair !== cp) return false;
-      if (!q) return true;
-      const hay = (
-        "rule " + item.rule_a + " vs rule " + item.rule_b + " " +
-        item.class_pair + " " + item.feedback + " " +
-        (item.label || "") + " " + (item.domination || "") + " " +
-        (item.settle || "") + " " + (item.taxonomy || "")
-      ).toLowerCase();
-      if (hay.indexOf(q) !== -1) return true;
-      if (!nums) return false;
-      return nums.every(function (n) {
-        return String(item.rule_a) === n || String(item.rule_b) === n;
-      });
-    }).slice(0, 200);
-
-    if (!q && !fb && !cp) {
-      out.innerHTML = "<p class='lede'>Type a rule number (or pair) to jump into the catalog.</p>";
-      return;
-    }
-    if (!rows.length) {
-      out.innerHTML = "<p class='missing'>No pairs match.</p>";
-      return;
-    }
-    out.innerHTML = rows.map(function (item) {
-      const extra = [
-        item.label, item.domination, item.settle
-      ].filter(Boolean).join(" · ");
-      const suffix = extra ? " · " + extra : "";
-      return (
-        "<a href='" + href(item) + "'>" +
-        item.feedback + " / " + item.class_pair +
-        " · rule " + item.rule_a + " vs " + item.rule_b + suffix +
-        "</a>"
-      );
-    }).join("");
-  }
-
-  search.addEventListener("input", render);
-  if (feedback) feedback.addEventListener("change", render);
-  if (klass) klass.addEventListener("change", render);
-})();
-
-(function () {
   const q = document.getElementById("list-filter");
+  const feedback = document.getElementById("list-feedback");
   const label = document.getElementById("list-label");
   const domination = document.getElementById("list-domination");
   const settle = document.getElementById("list-settle");
@@ -110,6 +51,7 @@
 
   function render() {
     const text = (q.value || "").trim().toLowerCase();
+    const fb = chosen(feedback);
     const lab = chosen(label);
     const dom = chosen(domination);
     const setl = chosen(settle);
@@ -118,13 +60,14 @@
     cards.forEach(function (card) {
       const hay = card.getAttribute("data-pair") || "";
       const matchText = !text || hay.indexOf(text) !== -1;
+      const matchFb = matches(fb, card.getAttribute("data-feedback"));
       const matchLab = matches(lab, card.getAttribute("data-label"));
       const matchDom = matches(dom, card.getAttribute("data-domination"));
       const matchSet = matches(setl, card.getAttribute("data-settle"));
       const matchCp = matches(cp, card.getAttribute("data-class-pair"));
       const matchWalls = matches(wall, card.getAttribute("data-walls"));
       const matchHi = !onlyHi || card.classList.contains("highlighted");
-      card.classList.toggle("hidden", !(matchText && matchLab && matchDom && matchSet && matchCp && matchWalls && matchHi));
+      card.classList.toggle("hidden", !(matchText && matchFb && matchLab && matchDom && matchSet && matchCp && matchWalls && matchHi));
     });
     let any = false;
     sections.forEach(function (section) {
@@ -178,7 +121,7 @@
   function current() {
     try {
       const saved = localStorage.getItem(KEY);
-      if (saved === "color" || saved === "decisive") return saved;
+      if (saved === "color" || saved === "decisive" || saved === "depth") return saved;
       return "bw";
     } catch (e) {
       return "bw";

@@ -165,6 +165,7 @@ section.block h2 {
 }
 
 .plot-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+.plot-grid.quad { grid-template-columns: 1fr 1fr 1fr 1fr; }
 
 .plot-card h3 {
   font-size: 0.78rem;
@@ -455,5 +456,6 @@ hr.hi-rule {
 
 @media (max-width: 800px) {
   .plot-grid, .plot-grid.triple { grid-template-columns: 1fr; }
+  .plot-grid.quad { grid-template-columns: 1fr 1fr; }
   .pair-title { font-size: 1.55rem; }
 }

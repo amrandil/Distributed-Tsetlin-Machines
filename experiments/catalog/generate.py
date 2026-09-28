@@ -341,6 +341,7 @@ def scan_pairs() -> List[Dict[str, object]]:
                         "has_hamming": (pair_dir / "hamming_distance.png").exists(),
                         "has_lag_hamming": (pair_dir / "lag_hamming.png").exists(),
                         "has_decisive": (pair_dir / "spacetime_decisive.png").exists(),
+                        "has_depth": (pair_dir / "spacetime_depth.png").exists(),
                         "metrics": metrics,
                         "label": str(metrics.get("label") or ""),
                         "domination": str(metrics.get("domination") or ""),
@@ -361,7 +362,7 @@ def scan_pairs() -> List[Dict[str, object]]:
 # ---- HTML --------------------------------------------------------------------
 
 def _asset(depth: int, name: str) -> str:
-    return f"{'../' * depth}assets/{name}?v=16"
+    return f"{'../' * depth}assets/{name}?v=18"
 
 
 def _rule_img(depth: int, rule: int, kind: str) -> str:
@@ -405,7 +406,6 @@ def _page(title: str, body: str, depth: int, active: str = "") -> str:
         {nav("Majority", prefix + "majority/index.html", "majority")}
         {nav("Minority", prefix + "minority/index.html", "minority")}
         {nav("Rules", prefix + "rules/index.html", "rules")}
-        {nav("Browse", prefix + "browse.html", "browse")}
         {nav("Highlights", prefix + "highlights.html", "highlights")}
       </nav>
     </header>
@@ -425,6 +425,7 @@ def _view_switch(*, item: bool = False) -> str:
       <button type="button" {attr}="bw">B&amp;W</button>
       <button type="button" {attr}="color">Color</button>
       <button type="button" {attr}="decisive">Decisive</button>
+      <button type="button" {attr}="depth">Depth</button>
     </div>"""
 
 
@@ -440,13 +441,16 @@ def _gallery_thumb(pair: Dict[str, object], depth: int) -> str:
         depth, pair, "spacetime_color.png") if pair["has_color"] else ""
     decisive = _result_img(
         depth, pair, "spacetime_decisive.png") if pair["has_decisive"] else ""
-    src = bw or color or decisive
+    depth_png = _result_img(
+        depth, pair, "spacetime_depth.png") if pair["has_depth"] else ""
+    src = bw or color or decisive or depth_png
     if not src:
         return '<p class="missing">Missing diagrams</p>'
     return (
         f'<img class="gallery-thumb" src="{escape(src)}" '
         f'data-bw="{escape(bw)}" data-color="{escape(color)}" '
         f'data-decisive="{escape(decisive)}" '
+        f'data-depth="{escape(depth_png)}" '
         f'alt="rule {pair["rule_a"]} vs {pair["rule_b"]}" loading="lazy">'
     )
 
@@ -628,8 +632,8 @@ def write_pair_page(
     pair_plots = f"""
     <section class="block">
       <h2>The pair, from a random grid</h2>
-      <p class="lede">CLA rule selection on the same 201-cell random initial condition used in the batch ({escape(str(pair['feedback']))} neighborhood feedback). Green marks decisive cell-steps: the two rules give different outputs for the neighbourhood the cell sees, so the TA's arm choice decides the next state.</p>
-      <div class="plot-grid triple">
+      <p class="lede">CLA rule selection on the same 201-cell random initial condition used in the batch ({escape(str(pair['feedback']))} neighborhood feedback). Green marks decisive cell-steps: the two rules give different outputs for the neighbourhood the cell sees, so the TA's arm choice decides the next state. The depth plot drops the arm colour and shows only how deep each TA sits in its arm (white = deepest, black = boundary).</p>
+      <div class="plot-grid quad">
         <div class="plot-card">
           <h3>Cell state (B&amp;W)</h3>
           {_img(_result_img(depth, pair, "spacetime_bw.png"), "pair spacetime B&W", bool(pair["has_bw"]))}
@@ -641,6 +645,10 @@ def write_pair_page(
         <div class="plot-card">
           <h3>Decisive cell-steps</h3>
           {_img(_result_img(depth, pair, "spacetime_decisive.png"), "decisive cell-steps", bool(pair["has_decisive"]))}
+        </div>
+        <div class="plot-card">
+          <h3>TA depth only</h3>
+          {_img(_result_img(depth, pair, "spacetime_depth.png"), "TA depth", bool(pair["has_depth"]))}
         </div>
       </div>
     </section>
@@ -752,7 +760,8 @@ def _pair_card_attrs(pair: Dict[str, object], *, class_pair: bool = False) -> st
     if pair.get("highlighted"):
         hay += " highlighted star"
     attrs = (
-        f' data-pair="{escape(hay)}" data-label="{escape(str(pair["label"]))}"'
+        f' data-pair="{escape(hay)}" data-feedback="{escape(str(pair["feedback"]))}"'
+        f' data-label="{escape(str(pair["label"]))}"'
         f' data-domination="{escape(str(pair.get("domination") or ""))}"'
         f' data-settle="{escape(str(pair.get("settle") or ""))}"'
         f' data-walls="{escape(_walls_bin(pair.get("arm_walls_final")))}"'
@@ -910,6 +919,12 @@ def write_highlights(pairs: Sequence[Dict[str, object]]) -> None:
 
 def write_browse(pairs: Sequence[Dict[str, object]]) -> None:
     depth = 0
+    feedback_filter = _filter_select(
+        "list-feedback",
+        "All feedback",
+        FEEDBACKS,
+        {fb: fb.title() for fb in FEEDBACKS},
+    )
     class_filter = _filter_select(
         "list-class",
         "All class pairs",
@@ -956,12 +971,14 @@ def write_browse(pairs: Sequence[Dict[str, object]]) -> None:
     body = f"""
     <p class="pair-title">Browse</p>
     <p class="lede">Every cross-class pair, split by feedback. A pair stays when it matches every menu you set. Within a menu, any ticked value counts.</p>
+    <p class="lede">Each pair page shows how both elementary rules look on their own (single cell, then a shared random initial row), then the CLA spacetime diagrams from the batch runs. Majority and minority feedback are separate catalogs.</p>
     <p class="feedback-counts">
       <span>Majority <strong data-top-count="majority">{len(_group(pairs, "majority"))}</strong></span>
       <span>Minority <strong data-top-count="minority">{len(_group(pairs, "minority"))}</strong></span>
     </p>
     <div class="search">
       <input id="list-filter" type="search" placeholder="Filter by rule number…">
+      {feedback_filter}
       {class_filter}
       {label_filter}
       {domination_filter}
@@ -973,59 +990,7 @@ def write_browse(pairs: Sequence[Dict[str, object]]) -> None:
     <p id="browse-empty" class="missing hidden">No pairs match.</p>
     {''.join(sections)}
     """
-    _write(SITE / "browse.html", _page("Browse", body, depth, active="browse"))
-
-
-def write_home(pairs: Sequence[Dict[str, object]]) -> None:
-    catalog = [
-        {
-            "feedback": p["feedback"],
-            "class_pair": p["class_pair"],
-            "rule_a": p["rule_a"],
-            "rule_b": p["rule_b"],
-            "label": p["label"],
-            "domination": p.get("domination"),
-            "settle": p.get("settle"),
-            "taxonomy": p["taxonomy"],
-        }
-        for p in pairs
-    ]
-    n_maj = len(_group(pairs, "majority"))
-    n_min = len(_group(pairs, "minority"))
-    body = f"""
-    <p class="pair-title">Cross-class Tsetlin CLA fights</p>
-    <p class="lede">
-      Each pair page shows how both elementary rules look on their own
-      (single cell, then a shared random initial row), then the CLA spacetime
-      diagrams from the batch runs. Majority and minority feedback are separate catalogs.
-    </p>
-    <div class="grid-cards">
-      <a class="card" href="majority/index.html"><div class="k">Majority feedback</div><div class="s">{n_maj} pairs</div></a>
-      <a class="card" href="minority/index.html"><div class="k">Minority feedback</div><div class="s">{n_min} pairs</div></a>
-      <a class="card" href="rules/index.html"><div class="k">Elementary rules</div><div class="s">{len(UNIQUE_RULES)} unique ECAs</div></a>
-      <a class="card" href="browse.html"><div class="k">Browse</div><div class="s">Filter every pair, split by feedback</div></a>
-      <a class="card" href="highlights.html"><div class="k">Highlights</div><div class="s">Starred pairs by label</div></a>
-    </div>
-    <section class="block" style="margin-top:1.2rem">
-      <h2>Find a pair</h2>
-      <div class="search">
-        <input id="catalog-search" type="search" placeholder="e.g. 29 105 or coexist_sharp">
-        <select id="catalog-feedback">
-          <option value="">Both feedbacks</option>
-          <option value="majority">majority</option>
-          <option value="minority">minority</option>
-        </select>
-        <select id="catalog-class">
-          <option value="">All class pairs</option>
-          {''.join(f'<option value="{cp}">{cp}</option>' for cp in CLASS_PAIRS)}
-        </select>
-      </div>
-      <div id="catalog-results" class="results-list"></div>
-    </section>
-    <script>const CATALOG = {json.dumps(catalog, separators=(',', ':'))};</script>
-    """
-    _write(SITE / "index.html",
-           _page("CLA rule-pair catalog", body, 0, active="home"))
+    _write(SITE / "index.html", _page("CLA rule-pair catalog", body, depth, active="home"))
 
 
 def copy_assets() -> None:
@@ -1066,9 +1031,8 @@ def main() -> None:
                 child.unlink()
 
     copy_assets()
-    write_home(pairs)
-    write_highlights(pairs)
     write_browse(pairs)
+    write_highlights(pairs)
     write_rules_index()
 
     index = {(p["feedback"], int(p["rule_a"]),
