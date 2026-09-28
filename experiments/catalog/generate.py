@@ -9,9 +9,10 @@ page per pair under majority and minority feedback.
 Usage (from the repo root):
 
     python experiments/catalog/generate.py
-    python -m http.server -d experiments 8000
 
-Then open http://127.0.0.1:8000/catalog/site/index.html
+That writes the site, serves it at http://127.0.0.1:8000/catalog/site/index.html,
+and opens it in the browser. The process stays up until Ctrl-C. Pass --no-serve
+to only write the files.
 
 Highlights stay a stub until experiments/catalog/highlights.json is filled in.
 """
@@ -30,11 +31,16 @@ import matplotlib
 
 import argparse
 import csv
+import errno
+import functools
 import json
 import os
 import re
 import shutil
+import threading
+import webbrowser
 from html import escape
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
@@ -1000,6 +1006,38 @@ def copy_assets() -> None:
         shutil.copy2(CATALOG_SRC / "assets" / name, dest / name)
 
 
+def catalog_url(port: int) -> str:
+    return f"http://127.0.0.1:{port}/catalog/site/index.html"
+
+
+def serve_catalog(port: int, open_browser: bool) -> None:
+    """Serve experiments/ and keep this process alive until Ctrl-C."""
+    url = catalog_url(port)
+    handler = functools.partial(
+        SimpleHTTPRequestHandler, directory=str(EXPERIMENTS))
+    try:
+        httpd = ThreadingHTTPServer(("127.0.0.1", port), handler)
+    except OSError as exc:
+        if exc.errno != errno.EADDRINUSE:
+            raise
+        print(f"Catalog already being served at {url}")
+        print("Refresh that tab. Stop the other server with Ctrl-C if the page is stale.")
+        if open_browser:
+            webbrowser.open(url)
+        return
+
+    print(f"Catalog: {url}")
+    print("Leave this running. Press Ctrl-C to stop.")
+    if open_browser:
+        threading.Timer(0.4, lambda: webbrowser.open(url)).start()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\nStopped.")
+    finally:
+        httpd.server_close()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate the static CLA pair catalog.")
@@ -1007,6 +1045,12 @@ def main() -> None:
                         help="Regenerate ECA reference plates.")
     parser.add_argument("--plates-only", action="store_true",
                         help="Only render rule plates.")
+    parser.add_argument("--port", type=int, default=8000,
+                        help="Local port for the catalog server (default 8000).")
+    parser.add_argument("--no-serve", action="store_true",
+                        help="Write the site and exit without starting a server.")
+    parser.add_argument("--no-open", action="store_true",
+                        help="Serve the site without opening a browser.")
     args = parser.parse_args()
 
     print("Rendering elementary-CA plates…")
@@ -1064,8 +1108,11 @@ def main() -> None:
     if missing:
         preview = ", ".join(f"{fb} {a} vs {b}" for fb, a, b in sorted(missing)[:12])
         print(f"Not found in result dirs ({len(missing)}): {preview}")
-    print("Serve with:  python -m http.server -d experiments 8000")
-    print("Open:        http://127.0.0.1:8000/catalog/site/index.html")
+    if args.no_serve:
+        print(f"Open later at {catalog_url(args.port)}")
+        print(f"Serve with:  python -m http.server -d experiments {args.port}")
+        return
+    serve_catalog(args.port, open_browser=not args.no_open)
 
 
 if __name__ == "__main__":
