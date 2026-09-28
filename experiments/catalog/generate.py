@@ -810,7 +810,7 @@ def write_listing(feedback: str, class_pair: str, items: Sequence[Dict[str, obje
     <p class="pair-title">{escape(class_pair.replace('_', ' '))}</p>
     <p class="lede">{len(items)} pairs.{hi_note} Click a card for the Wolfram-style rule plates plus the CLA fight.</p>
     <div class="search">
-      <input id="list-filter" type="search" placeholder="Filter by rule number…">
+      <input id="list-filter" type="search" placeholder="ruleA ruleB, e.g. 110 30">
       {label_filter}
       {domination_filter}
       {settle_filter}
@@ -983,7 +983,7 @@ def write_browse(pairs: Sequence[Dict[str, object]]) -> None:
       <span>Minority <strong data-top-count="minority">{len(_group(pairs, "minority"))}</strong></span>
     </p>
     <div class="search">
-      <input id="list-filter" type="search" placeholder="Filter by rule number…">
+      <input id="list-filter" type="search" placeholder="ruleA ruleB, e.g. 110 30">
       {feedback_filter}
       {class_filter}
       {label_filter}
