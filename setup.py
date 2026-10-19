@@ -14,6 +14,10 @@ setup(
         "numpy>=1.24.0",
         "matplotlib>=3.5.0",
     ],
+    extras_require={
+        # Relaxed (differentiable) Tsetlin Machine: cakit.tm, experiments/relaxed_tm
+        "tm": ["torch>=2.0.0", "scikit-learn>=1.3.0"],
+    },
     python_requires=">=3.8",
     classifiers=[
         "Development Status :: 3 - Alpha",

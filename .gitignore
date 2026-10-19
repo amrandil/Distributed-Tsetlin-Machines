@@ -61,3 +61,6 @@ dmypy.json
 experiments/results_*/**/*.npz
 # Local Netlify folder
 .netlify
+
+# Relaxed TM: downloaded benchmark data
+experiments/relaxed_tm/data/
