@@ -64,6 +64,44 @@ Rules learned with 4 clauses, seed 0 (exact XOR rule):
 − : x1 ∧ x2
 ```
 
+### Example: rules learned with 10 clauses, seed 0
+
+```
++ : x1 ∧ ¬x2
++ : ¬x1 ∧ x2
++ : x1 ∧ ¬x2
++ : ¬x1 ∧ x2
++ : x1 ∧ ¬x2
+− : ¬x1 ∧ ¬x2
+− : ¬x1 ∧ ¬x2
+− : ¬x1 ∧ ¬x2
+− : x1 ∧ x2
+− : x1 ∧ x2
+```
+
+Grouping the duplicates, this is the XOR rule with each case given a few votes:
+
+| Clause | Polarity | Copies | Meaning |
+| --- | --- | --- | --- |
+| x1 ∧ ¬x2 | + | 3 | x1 on, x2 off → output 1 |
+| ¬x1 ∧ x2 | + | 2 | x1 off, x2 on → output 1 |
+| ¬x1 ∧ ¬x2 | − | 3 | both off → output 0 |
+| x1 ∧ x2 | − | 2 | both on → output 0 |
+
+How it classifies each input:
+
+| Input (x1, x2) | Clauses that fire | Vote sum | Output | XOR |
+| --- | --- | --- | --- | --- |
+| (1, 0) | 3 × `+ x1 ∧ ¬x2` | +3 | 1 | 1 ✓ |
+| (0, 1) | 2 × `+ ¬x1 ∧ x2` | +2 | 1 | 1 ✓ |
+| (0, 0) | 3 × `− ¬x1 ∧ ¬x2` | −3 | 0 | 0 ✓ |
+| (1, 1) | 2 × `− x1 ∧ x2` | −2 | 0 | 0 ✓ |
+
+Gradient descent spread the 10 clauses over all four cases, 2–3 each, instead
+of stacking them on one, so every case is covered. In plain words the learned
+model reads: output 1 when exactly one of x1, x2 is on; output 0 when both are
+off or both are on.
+
 Clause statistics: in every run, every clause is one of the four XOR clauses —
 no empty clauses, no contradictory clauses (x and ¬x together), and no
 irrelevant literals; every clause has exactly 2 literals. With 10 and 20
