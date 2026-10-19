@@ -26,18 +26,15 @@ pytest tests/tm                    # unit tests for cakit.tm
 
 | # | Script | Status |
 | --- | --- | --- |
-| E0 | `python -m experiments.relaxed_tm.run_e0` | Clean 2-bit XOR, 10 seeds |
+| E0 | `python -m experiments.relaxed_tm.run_e0` | Done: clean 2-bit XOR, see [E0_clean_xor.md](E0_clean_xor.md) |
 | E1-E6 | to come | Noisy XOR and Iris under Granmo's benchmark protocol |
 
 `data.py` downloads Granmo's noisy XOR and Binary Iris files from
 `cair/TsetlinMachine` on first use and caches them in `data/` (git-ignored).
-Results are written to `results/` as JSON.
+Results are written to `results/` as JSON, one file per run configuration.
 
-### E0 notes
+### E0 summary
 
-With 10 or 20 clauses all 10 seeds reach 100% hard accuracy and the exact
-XOR rule. With the minimal 4 clauses about 3 in 10 seeds get stuck: two
-same-polarity clauses learn the same sub-pattern and one XOR case is left
-uncovered (vote sum 0). A standard TM avoids this with its target T, which
-stops feedback to a sub-pattern once it has enough votes; plain cross-entropy
-keeps rewarding the covered pattern. Try `--clauses 4` to reproduce.
+10/10 seeds recover the exact XOR rule with 10 or 20 clauses; 5/10 with the
+minimum of 4 clauses, where two clauses can learn the same case. Setup, full
+results and discussion: [E0_clean_xor.md](E0_clean_xor.md).

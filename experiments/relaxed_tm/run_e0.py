@@ -49,20 +49,21 @@ def main() -> None:
         hard = harden(model)
         rules = format_rules(hard)
         hard_epochs = history["train_hard"]
-        first_perfect = next((i for i, a in enumerate(hard_epochs) if a == 1.0), None)
+        # Number of epochs until hard accuracy first reached 100% (1 = after the first epoch).
+        epochs_to_100 = next((i + 1 for i, a in enumerate(hard_epochs) if a == 1.0), None)
         runs.append(
             {
                 "seed": seed,
                 **metrics,
                 "rules": rules,
                 "exact_xor_rule": set(rules) == XOR_RULE,
-                "first_epoch_hard_100": first_perfect,
+                "epochs_to_hard_100": epochs_to_100,
                 **hard.stats(),
             }
         )
         print(
             f"seed {seed:2d}: hard {metrics['hard']:.3f}  soft {metrics['soft']:.3f}  "
-            f"100% hard from epoch {first_perfect}  exact rule: {runs[-1]['exact_xor_rule']}"
+            f"100% hard after {epochs_to_100} epochs  exact rule: {runs[-1]['exact_xor_rule']}"
         )
 
     print("\nRules learned with seed 0:")
@@ -84,7 +85,7 @@ def main() -> None:
 
     if not args.no_save:
         RESULTS_DIR.mkdir(exist_ok=True)
-        out = RESULTS_DIR / "e0_clean_xor.json"
+        out = RESULTS_DIR / f"e0_clean_xor_m{args.clauses}.json"
         out.write_text(
             json.dumps(
                 {"args": vars(args), "train_config": asdict(config), "summary": summary, "runs": runs},

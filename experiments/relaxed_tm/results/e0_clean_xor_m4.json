@@ -1,0 +1,244 @@
+{
+  "args": {
+    "clauses": 4,
+    "seeds": 10,
+    "epochs": 100,
+    "tau": 1.0,
+    "lr": 0.05,
+    "init_mean": -1.5,
+    "no_save": false
+  },
+  "train_config": {
+    "epochs": 100,
+    "batch_size": 32,
+    "lr": 0.05,
+    "lambda_l1": 0.0,
+    "lambda_entropy": 0.0,
+    "entropy_start_frac": 0.5,
+    "log_every": 1
+  },
+  "summary": {
+    "hard_accuracy": {
+      "mean": 92.5,
+      "ci95": 7.100774605632824,
+      "p5": 75.0,
+      "p95": 100.0,
+      "min": 75.0,
+      "max": 100.0,
+      "n_runs": 10
+    },
+    "soft_accuracy": {
+      "mean": 82.5,
+      "ci95": 12.102107254523897,
+      "p5": 50.0,
+      "p95": 100.0,
+      "min": 50.0,
+      "max": 100.0,
+      "n_runs": 10
+    },
+    "seeds_at_100_hard": 7,
+    "seeds_with_exact_rule": 5
+  },
+  "runs": [
+    {
+      "seed": 0,
+      "soft": 1.0,
+      "hard": 1.0,
+      "gap": 0.0,
+      "rules": [
+        "+ : x1 ∧ ¬x2",
+        "+ : ¬x1 ∧ x2",
+        "− : ¬x1 ∧ ¬x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": true,
+      "epochs_to_hard_100": 7,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 1,
+      "soft": 1.0,
+      "hard": 1.0,
+      "gap": 0.0,
+      "rules": [
+        "+ : ¬x1 ∧ x2",
+        "+ : x1 ∧ ¬x2",
+        "− : ¬x1 ∧ ¬x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": true,
+      "epochs_to_hard_100": 12,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 2,
+      "soft": 0.75,
+      "hard": 1.0,
+      "gap": -0.25,
+      "rules": [
+        "+ : ¬x1 ∧ x2",
+        "+ : ¬x1 ∧ x2",
+        "− : ¬x1 ∧ ¬x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": false,
+      "epochs_to_hard_100": 15,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 3,
+      "soft": 1.0,
+      "hard": 1.0,
+      "gap": 0.0,
+      "rules": [
+        "+ : x1 ∧ ¬x2",
+        "+ : ¬x1 ∧ x2",
+        "− : ¬x1 ∧ ¬x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": true,
+      "epochs_to_hard_100": 6,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 4,
+      "soft": 1.0,
+      "hard": 1.0,
+      "gap": 0.0,
+      "rules": [
+        "+ : ¬x1 ∧ x2",
+        "+ : x1 ∧ ¬x2",
+        "− : ¬x1 ∧ ¬x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": true,
+      "epochs_to_hard_100": 5,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 5,
+      "soft": 0.5,
+      "hard": 0.75,
+      "gap": -0.25,
+      "rules": [
+        "+ : x1 ∧ ¬x2",
+        "+ : x1 ∧ ¬x2",
+        "− : x1 ∧ x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": false,
+      "epochs_to_hard_100": null,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 6,
+      "soft": 0.75,
+      "hard": 1.0,
+      "gap": -0.25,
+      "rules": [
+        "+ : ¬x1 ∧ x2",
+        "+ : ¬x1 ∧ x2",
+        "− : ¬x1 ∧ ¬x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": false,
+      "epochs_to_hard_100": 14,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 7,
+      "soft": 0.75,
+      "hard": 0.75,
+      "gap": 0.0,
+      "rules": [
+        "+ : ¬x1 ∧ x2",
+        "+ : x1 ∧ ¬x2",
+        "− : x1 ∧ x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": false,
+      "epochs_to_hard_100": null,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 8,
+      "soft": 0.5,
+      "hard": 0.75,
+      "gap": -0.25,
+      "rules": [
+        "+ : ¬x1 ∧ x2",
+        "+ : ¬x1 ∧ x2",
+        "− : x1 ∧ x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": false,
+      "epochs_to_hard_100": null,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    },
+    {
+      "seed": 9,
+      "soft": 1.0,
+      "hard": 1.0,
+      "gap": 0.0,
+      "rules": [
+        "+ : ¬x1 ∧ x2",
+        "+ : x1 ∧ ¬x2",
+        "− : ¬x1 ∧ ¬x2",
+        "− : x1 ∧ x2"
+      ],
+      "exact_xor_rule": true,
+      "epochs_to_hard_100": 10,
+      "n_clauses": 4,
+      "n_empty": 0,
+      "n_contradictory": 0,
+      "n_active": 4,
+      "total_literals": 8,
+      "mean_clause_length": 2.0
+    }
+  ]
+}
