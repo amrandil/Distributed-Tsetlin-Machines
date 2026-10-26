@@ -12,7 +12,7 @@ Full plan (model, data, protocol, hyperparameters, success criteria):
 | # | Experiment | Script | Status |
 | --- | --- | --- | --- |
 | E0 | Sanity check: clean 2-bit XOR | `run_e0.py` | Done: [report](reports/E0_clean_xor.md) |
-| E1 | Main result: noisy XOR, benchmark protocol | `run_e1_baseline.py` (standard TM) | In progress: standard-TM reproduction |
+| E1 | Main result: noisy XOR, benchmark protocol | `run_e1_baseline.py` (standard TM) | Part 1 done: standard TM 99.94% ± 0.07, [report](reports/E1_noisy_xor.md). Part 2 (relaxed TM) to do |
 | E2 | Clause count on noisy XOR | | To do |
 | E3 | Noise robustness on noisy XOR | | To do |
 | E4 | Main result: Iris, benchmark protocol | | To do |
@@ -54,7 +54,7 @@ and caches them in `data/` (git-ignored).
 
 ```bash
 python -m experiments.relaxed_tm.classification.run_e0 --clauses 10
-python -m experiments.relaxed_tm.classification.run_e1_baseline        # ~1.5 h on 2 cores
+python -m experiments.relaxed_tm.classification.run_e1_baseline        # ~1 h on 2 cores
 ```
 
 `tmu` is installed from a pinned commit of its GitHub repository (see
