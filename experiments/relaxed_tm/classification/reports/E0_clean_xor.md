@@ -5,7 +5,7 @@ the exact XOR rule in 10/10 seeds with 10 or 20 clauses. With the minimum of 4
 clauses it does so in only 5/10 seeds: two clauses can learn the same case and
 leave another case uncovered.
 
-Run on 2026-10-19, branch `relaxed-tm`. Raw results: `results/e0_clean_xor_m{4,10,20}.json`.
+Run on 2026-10-19, branch `relaxed-tm`. Raw results: [`../results/e0_clean_xor_m{4,10,20}.json`](../results/). Experiment plan: [PLAN.md](../PLAN.md).
 
 ## Question
 
@@ -161,9 +161,9 @@ clauses to learn other cases; cross-entropy has no such stopping point.
 ## Reproduce
 
 ```bash
-python -m experiments.relaxed_tm.run_e0 --clauses 4
-python -m experiments.relaxed_tm.run_e0 --clauses 10
-python -m experiments.relaxed_tm.run_e0 --clauses 20
+python -m experiments.relaxed_tm.classification.run_e0 --clauses 4
+python -m experiments.relaxed_tm.classification.run_e0 --clauses 10
+python -m experiments.relaxed_tm.classification.run_e0 --clauses 20
 ```
 
 Seeds fix all randomness (initial weights and example order), so these

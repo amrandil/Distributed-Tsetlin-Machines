@@ -8,7 +8,7 @@ Datasets for the relaxed Tsetlin Machine experiments.
 - Iris (E4): the 150 original measurements, thermometer-encoded per
   training split; Granmo's Binary Iris file for the encoding ablation.
 
-Downloaded files are cached in ``experiments/relaxed_tm/data/`` (git-ignored).
+Downloaded files are cached in ``experiments/relaxed_tm/classification/data/`` (git-ignored).
 """
 
 from __future__ import annotations

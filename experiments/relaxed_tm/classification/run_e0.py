@@ -5,8 +5,8 @@ Question: does the relaxed TM learn XOR at all, and does the hardened model
 recover the XOR rule? Expect 100% hard accuracy within a few epochs.
 
 Usage:
-    python -m experiments.relaxed_tm.run_e0
-    python -m experiments.relaxed_tm.run_e0 --clauses 4 --seeds 10 --epochs 100
+    python -m experiments.relaxed_tm.classification.run_e0
+    python -m experiments.relaxed_tm.classification.run_e0 --clauses 4 --seeds 10 --epochs 100
 """
 
 from __future__ import annotations
@@ -19,8 +19,8 @@ from pathlib import Path
 import torch
 
 from cakit.tm import RelaxedTM, format_rules, harden
-from experiments.relaxed_tm.data import clean_xor
-from experiments.relaxed_tm.train import TrainConfig, evaluate, set_seed, summarize, train
+from experiments.relaxed_tm.classification.data import clean_xor
+from experiments.relaxed_tm.common.train import TrainConfig, evaluate, set_seed, summarize, train
 
 XOR_RULE = {"+ : x1 ∧ ¬x2", "+ : ¬x1 ∧ x2", "− : x1 ∧ x2", "− : ¬x1 ∧ ¬x2"}
 RESULTS_DIR = Path(__file__).resolve().parent / "results"

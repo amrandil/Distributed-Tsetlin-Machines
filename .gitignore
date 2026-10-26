@@ -63,4 +63,4 @@ experiments/results_*/**/*.npz
 .netlify
 
 # Relaxed TM: downloaded benchmark data
-experiments/relaxed_tm/data/
+experiments/relaxed_tm/**/data/

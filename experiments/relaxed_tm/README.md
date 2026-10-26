@@ -1,17 +1,39 @@
 # Relaxed (differentiable) Tsetlin Machine experiments
 
-Verifies that a relaxed Tsetlin Machine, trained by gradient descent and then
-hardened back to 0/1 logic, learns small classification tasks as well as a
-standard Tsetlin Machine and gives readable clauses. No cellular automata yet.
+A relaxed Tsetlin Machine replaces each Tsetlin Automaton's include/exclude
+decision with a learned include-probability, so the whole machine can be
+trained by gradient descent and then hardened (rounded) back to 0/1 logic.
+The work goes in stages: first plain classification, then the relaxed TM as
+the update rule of a cellular automaton (a DiffLogic CA analogue).
 
-The model lives in `cakit/tm/`:
+The model itself lives in [`cakit/tm/`](../../cakit/tm/); see its
+[README](../../cakit/tm/README.md) for how the code maps to the model.
+
+## Stages
+
+| Stage | Folder | Status |
+| --- | --- | --- |
+| Tier 0: classification without CA (noisy XOR, Iris) | [`classification/`](classification/) | In progress: E0 done |
+| Later: relaxed TM as a CA update rule | to be added as sibling folders | Not started |
+
+Each stage folder has the same shape:
+
+```text
+<stage>/
+  README.md      status of each experiment, how to run it
+  PLAN.md        the experiment plan
+  data.py        datasets for this stage
+  run_eN.py      one script per experiment
+  reports/       one write-up per experiment (setup, results, comments)
+  results/       raw results as JSON (committed)
+  data/          downloaded datasets (git-ignored)
+```
+
+Code shared by all stages is in [`common/`](common/):
 
 | File | Contents |
 | --- | --- |
-| `relaxed.py` | `RelaxedTM` (soft AND clauses in log space, signed vote, `sigmoid((s - b) / tau)`) and `MultiClassRelaxedTM` (one bank per class, softmax training, argmax prediction) |
-| `harden.py` | `harden()`: include iff p > 0.5; empty clauses output 0 at prediction (Granmo's convention); clause statistics |
-| `rules.py` | `format_rules()`: hard clauses as text, e.g. `+ : x1 ∧ ¬x2` |
-| `encoding.py` | `ThermometerEncoder`: continuous features to bits, fitted on the training split |
+| `train.py` | `TrainConfig`, `train()` (Adam, BCE or softmax cross-entropy, L1 and entropy penalties, per-epoch soft/hard accuracy), `evaluate()` (soft, hard, gap), `summarize()` (Granmo's statistics: mean ± 95% CI, 5th/95th percentile, min, max) |
 
 ## Setup
 
@@ -22,19 +44,5 @@ pip install -e .
 pytest tests/tm                    # unit tests for cakit.tm
 ```
 
-## Experiments
-
-| # | Script | Status |
-| --- | --- | --- |
-| E0 | `python -m experiments.relaxed_tm.run_e0` | Done: clean 2-bit XOR, see [E0_clean_xor.md](E0_clean_xor.md) |
-| E1-E6 | to come | Noisy XOR and Iris under Granmo's benchmark protocol |
-
-`data.py` downloads Granmo's noisy XOR and Binary Iris files from
-`cair/TsetlinMachine` on first use and caches them in `data/` (git-ignored).
-Results are written to `results/` as JSON, one file per run configuration.
-
-### E0 summary
-
-10/10 seeds recover the exact XOR rule with 10 or 20 clauses; 5/10 with the
-minimum of 4 clauses, where two clauses can learn the same case. Setup, full
-results and discussion: [E0_clean_xor.md](E0_clean_xor.md).
+Run experiments from the repository root as modules, e.g.
+`python -m experiments.relaxed_tm.classification.run_e0`.
