@@ -12,7 +12,7 @@ Full plan (model, data, protocol, hyperparameters, success criteria):
 | # | Experiment | Script | Status |
 | --- | --- | --- | --- |
 | E0 | Sanity check: clean 2-bit XOR | `run_e0.py` | Done: [report](reports/E0_clean_xor.md) |
-| E1 | Main result: noisy XOR, benchmark protocol | | To do |
+| E1 | Main result: noisy XOR, benchmark protocol | `run_e1_baseline.py` (standard TM) | In progress: standard-TM reproduction |
 | E2 | Clause count on noisy XOR | | To do |
 | E3 | Noise robustness on noisy XOR | | To do |
 | E4 | Main result: Iris, benchmark protocol | | To do |
@@ -28,6 +28,9 @@ New experiments follow the same pattern: `run_eN.py` here, a write-up in
 | --- | --- |
 | `data.py` | Clean XOR; Granmo's noisy XOR files and a generator for other noise levels; Iris measurements; Granmo's Binary Iris file; 80/20 split |
 | `run_e0.py` | E0: clean XOR, several seeds, records rules and epochs to 100% |
+| `baselines.py` | Standard TM via `tmu` (the only file that imports it); converts its clauses to our `HardMultiClassTM` |
+| `xor_rules.py` | Checks learned clauses against the XOR rule: all four XOR clauses present, number of extra clauses, exact match |
+| `run_e1_baseline.py` | E1 part 1: standard TM on noisy XOR, Granmo's settings, 100 runs |
 | `reports/` | One write-up per experiment |
 | `results/` | Raw results as JSON |
 
@@ -43,7 +46,7 @@ and caches them in `data/` (git-ignored).
 - [x] Training loop with penalties and per-epoch soft/hard accuracy (`../common/train.py`)
 - [ ] Logging and reporting of all section 7 metrics per run (summary statistics done; training accuracy, timing and size still to add)
 - [x] Unit tests (`tests/tm/`)
-- [ ] Baselines: standard TM via `tmu`, logistic regression
+- [ ] Baselines: standard TM via `tmu` (done for noisy XOR), logistic regression
 - [ ] Energy measurement with CodeCarbon
 - [ ] Run E0 → E6 (E0 done)
 
@@ -51,7 +54,11 @@ and caches them in `data/` (git-ignored).
 
 ```bash
 python -m experiments.relaxed_tm.classification.run_e0 --clauses 10
+python -m experiments.relaxed_tm.classification.run_e1_baseline        # ~1.5 h on 2 cores
 ```
+
+`tmu` is installed from a pinned commit of its GitHub repository (see
+`requirements.txt`): the PyPI release and the latest tag fail under NumPy 2.
 
 ## E0 summary
 
