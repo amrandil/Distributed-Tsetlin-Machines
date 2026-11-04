@@ -27,11 +27,12 @@ New experiments follow the same pattern: `run_eN.py` here, a write-up in
 | File | Contents |
 | --- | --- |
 | `data.py` | Clean XOR; Granmo's noisy XOR files and a generator for other noise levels; Iris measurements; Granmo's Binary Iris file; 80/20 split |
-| `run_e0.py` | E0: clean XOR, several seeds, records rules and epochs to 100% |
+| `run_e0.py` | E0: clean XOR, several seeds, records rules, epochs to 100% and per-epoch training curves |
+| `plot_e0.py` | E0 figures (training curves, results per clause count, include-probabilities over epochs) |
 | `baselines.py` | Standard TM via `tmu` (the only file that imports it); converts its clauses to our `HardMultiClassTM` |
 | `xor_rules.py` | Checks learned clauses against the XOR rule: all four XOR clauses present, number of extra clauses, exact match |
 | `run_e1_baseline.py` | E1 part 1: standard TM on noisy XOR, Granmo's settings, 100 runs |
-| `reports/` | One write-up per experiment |
+| `reports/` | One write-up per experiment; figures in `reports/figures/` |
 | `results/` | Raw results as JSON |
 
 `data.py` downloads Granmo's files from `cair/TsetlinMachine` on first use
@@ -62,6 +63,6 @@ python -m experiments.relaxed_tm.classification.run_e1_baseline        # ~1 h on
 
 ## E0 summary
 
-10/10 seeds recover the exact XOR rule with 10 or 20 clauses; 5/10 with the
-minimum of 4 clauses, where two clauses can learn the same case. Details:
+10/10 seeds recover the exact XOR rule with 6, 8, 10 or 20 clauses; 5/10 with
+the minimum of 4 clauses, where two clauses can learn the same case. Details:
 [reports/E0_clean_xor.md](reports/E0_clean_xor.md).

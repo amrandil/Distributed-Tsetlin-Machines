@@ -12,7 +12,7 @@ from __future__ import annotations
 import random
 import time
 from dataclasses import asdict, dataclass, field
-from typing import Dict, List, Optional, Union
+from typing import Callable, Dict, List, Optional, Union
 
 import numpy as np
 import torch
@@ -67,10 +67,13 @@ def train(
     config: TrainConfig,
     X_val: Optional[np.ndarray] = None,
     y_val: Optional[np.ndarray] = None,
+    on_epoch_end: Optional[Callable[[int, Model], None]] = None,
 ) -> Dict[str, List[float]]:
     """
     Train ``model`` in place. Returns a per-epoch history of loss and
     (if ``log_every`` > 0) soft/hard accuracy on training and validation data.
+    ``on_epoch_end(epoch, model)``, if given, is called after every epoch
+    (e.g. to record include-probabilities); it must not use random numbers.
     """
     Xt = torch.as_tensor(X_train).long()
     yt = torch.as_tensor(y_train).long()
@@ -110,6 +113,8 @@ def train(
                 history["val_soft"].append(soft_accuracy(model, Xv, yv))
                 history["val_hard"].append(hard_accuracy(model, Xv, yv))
             history["undecided"].append(undecided_fraction(model))
+        if on_epoch_end is not None:
+            on_epoch_end(epoch, model)
     return history
 
 

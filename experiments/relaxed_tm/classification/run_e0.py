@@ -59,6 +59,8 @@ def main() -> None:
                 "exact_xor_rule": set(rules) == XOR_RULE,
                 "epochs_to_hard_100": epochs_to_100,
                 **hard.stats(),
+                # per-epoch training curves (on the training data) for plot_e0.py
+                "history": {k: history[k] for k in ("loss", "train_soft", "train_hard", "undecided")},
             }
         )
         print(
