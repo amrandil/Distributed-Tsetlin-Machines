@@ -6,7 +6,7 @@ and converts the learned clauses into our own ``HardMultiClassTM``, so the
 standard TM's rules are printed and checked with the same code as the
 relaxed TM's.
 
-Notes on tmu (pinned in requirements.txt to a commit of cair/tmu):
+Notes on tmu (installed with install_tmu.sh, pinned to a commit of cair/tmu):
 
 - The PyPI release (0.7.1) and the latest tag (0.8.3) fail under NumPy 2;
   the pinned commit of the main branch fixes this.

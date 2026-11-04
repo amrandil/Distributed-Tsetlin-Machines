@@ -30,6 +30,7 @@ New experiments follow the same pattern: `run_eN.py` here, a write-up in
 | `run_e0.py` | E0: clean XOR, several seeds, records rules, epochs to 100% and per-epoch training curves |
 | `plot_e0.py` | E0 figures (training curves, results per clause count, include-probabilities over epochs) |
 | `baselines.py` | Standard TM via `tmu` (the only file that imports it); converts its clauses to our `HardMultiClassTM` |
+| `install_tmu.sh` | Installs tmu at the pinned commit (see below) |
 | `xor_rules.py` | Checks learned clauses against the XOR rule: all four XOR clauses present, number of extra clauses, exact match |
 | `run_e1_baseline.py` | E1 part 1: standard TM on noisy XOR, Granmo's settings, 100 runs |
 | `reports/` | One write-up per experiment; figures in `reports/figures/` |
@@ -58,8 +59,12 @@ python -m experiments.relaxed_tm.classification.run_e0 --clauses 10
 python -m experiments.relaxed_tm.classification.run_e1_baseline        # ~1 h on 2 cores
 ```
 
-`tmu` is installed from a pinned commit of its GitHub repository (see
-`requirements.txt`): the PyPI release and the latest tag fail under NumPy 2.
+The standard-TM baseline needs `tmu`, which is not in `requirements.txt`.
+Install it once with `bash experiments/relaxed_tm/classification/install_tmu.sh`:
+the script builds a pinned commit of `cair/tmu`, because the PyPI release and
+the latest tag fail under NumPy 2, and removes an Intel-only compiler flag that
+breaks the build on Apple Silicon. Without tmu, everything else runs and its
+tests are skipped.
 
 ## E0 summary
 

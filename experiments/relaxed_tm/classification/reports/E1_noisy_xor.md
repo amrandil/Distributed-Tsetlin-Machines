@@ -148,7 +148,7 @@ with 20 clauses. Both have 20 clauses, but the structure differs. Options:
 ### Reproduce
 
 ```bash
-pip install -r requirements.txt     # installs tmu from the pinned commit
+bash experiments/relaxed_tm/classification/install_tmu.sh   # installs tmu at the pinned commit
 python -m experiments.relaxed_tm.classification.run_e1_baseline   # ~1 h on 2 cores
 ```
 
