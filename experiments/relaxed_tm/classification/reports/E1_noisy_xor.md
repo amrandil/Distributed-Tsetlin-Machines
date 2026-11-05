@@ -1,141 +1,78 @@
 # E1 — Main result: noisy XOR
 
-E1 has two parts: (1) run the standard Tsetlin Machine ourselves under
-Granmo's (2018) protocol, as the reference; (2) run the relaxed TM under the
-same protocol. This report covers part 1. Part 2 will be added below.
+E1 has two parts: (1) reproduce Granmo's (2018) standard Tsetlin Machine
+result by running his original code in his own setup, as the reference;
+(2) run the relaxed TM under the same protocol. This report covers part 1.
+Part 2 will be added below.
 
 Experiment plan: [PLAN.md](../PLAN.md), sections 2, 4 and 8.
 
 ## Part 1: Standard TM (reference)
 
-**Result:** the standard TM reaches **99.94% ± 0.07** mean test accuracy over
-100 runs, at or above Granmo's published 99.3% ± 0.3. 98/100 runs reach at
-least 99%. The four XOR clauses are learned in almost every run, but most
-runs also keep a few extra clauses that use noise bits: on average 3.9 per
-run, and only 1 run in 100 has no noise bit in any clause.
+**Result:** running Granmo's original code and noisy XOR demo, unchanged, 100
+times gives **99.92% ± 0.06** mean test accuracy, against **99.3% ± 0.3**
+published in his Table 15. Our reproduction is slightly better and much more
+consistent: our worst run reaches 98.06%, his 91.6%.
 
-Run on 2026-10-26, branch `relaxed-tm`. Raw results:
-[`../results/e1_standard_tm_noisy_xor.json`](../results/e1_standard_tm_noisy_xor.json).
+Run on 2026-11-05, branch `relaxed-tm`. Raw results:
+[`../results/e1_granmo2018_demo_noisy_xor.json`](../results/e1_granmo2018_demo_noisy_xor.json).
 
 ### Question
 
-Do our data loading, evaluation and statistics reproduce Granmo's noisy XOR
-benchmark? And what do the standard TM's learned clauses look like, so the
-relaxed TM can be compared with them on both accuracy and readability?
+Does Granmo's own code, run his way on his data, reproduce his published
+noisy XOR result? This sets the reference the relaxed TM is compared with.
 
 ### Setup
 
-| Part | Setting |
-| --- | --- |
-| Data | Granmo's released files (`cair/TsetlinMachine`): 12 input bits, label = x1 XOR x2, x3–x12 random |
-| Train / test | 5,000 / 5,000, fixed split. 40% of training labels inverted; test labels clean |
-| Model | Multi-Class TM with 2 classes ("y = 0", "y = 1"), 10 clauses per class (5 positive, 5 negative): Granmo's "20 clauses" |
-| Settings | T = 15, s = 3.9, no boosted true-positive feedback (as in Granmo's noisy XOR demo) |
-| Tsetlin Automata | 8 state bits = 256 states (tmu default); Granmo (2018) used 200 (100 per action) |
-| Epochs | 200; test accuracy of the model after the final epoch is reported |
-| Runs | 100 (seeds 0–99) |
-| Prediction | Class with the larger vote sum; empty clauses do not vote |
-| Library | `tmu`, pinned commit `acff83c` of `cair/tmu` |
+| Part | Granmo (2018) | Our run |
+| --- | --- | --- |
+| Data | 10,000 examples, 12 binary inputs; y = XOR of two inputs (x1, x2 in the released files), the other 10 random. Released as files in `cair/TsetlinMachine` | Same (his released files, unchanged since April 2018) |
+| Train / test split | 50% for training: 5,000 / 5,000, the fixed split of the released files | Same |
+| Label noise | 40% of outputs inverted; test outputs unperturbed | Same (39.7% of training labels inverted in the file; test labels clean) |
+| TM | Multi-Class Tsetlin Machine (Section 6.1; footnote 7) | Same |
+| Clauses | 20; his code splits them over the 2 classes: 10 per class, 5 positive and 5 negative | Same |
+| s, T | s = 3.9, T = 15 | Same |
+| Boosted true-positive feedback | Not used (footnote 7 does not mention it, unlike the Iris, digits and MNIST experiments) | Same (off) |
+| Tsetlin Automaton states | "Each has 100 states"; his code uses 100 per action, 200 in total | Same |
+| Epochs | 200; accuracy after the final epoch is reported | Same |
+| Runs | 100 replications with different random number streams | Same: 100 fresh processes, each running his demo once, with no seeding by us |
+| Code | His `MultiClassTsetlinMachine.pyx` and `NoisyXORDemo.py` (`cair/TsetlinMachine`) | Same files, commit `3cb8c89`. Changes needed for Python 3 only: `print(...)` syntax in the demo and the Cython setting `language_level=2` (see [`../granmo2018/`](../granmo2018/)) |
+| Reported statistics | Test accuracy: mean ± 95% CI, 5th / 95th percentile, min, max | Same, plus training accuracy |
 
-Test accuracy was also logged every 10 epochs for a learning curve. It is not
-used to choose a model.
-
-**How the clauses were read out.** The TA include/exclude actions of each
-class were converted into our own `HardMultiClassTM` (`baselines.py`), so the
-standard TM's rules are printed and checked with the same code as the relaxed
-TM's. In all 100 runs the converted model predicts exactly like tmu.
-
-**Rule measures**, per class bank (`xor_rules.py`):
-
-- *XOR clauses present:* all four XOR clauses appear with the right polarity. For the "y = 1" bank: `+ x1∧¬x2`, `+ ¬x1∧x2`, `− x1∧x2`, `− ¬x1∧¬x2`. The "y = 0" bank should learn the mirror image.
-- *Extra clauses:* clauses that are not one of those four (duplicates of an XOR clause do not count as extra).
-- *Exact rule:* XOR clauses present and no extra clauses.
+His code has changed since 2018, but every change after June 2018 leaves its
+behaviour the same. The one earlier change (June 5, 2018) concerns empty
+clauses: before it, an empty clause voted at prediction; since then it does
+not. We ran the current version.
 
 ### Results
 
-| Measure | Standard TM (ours) | Granmo (2018) |
+| Measure | Granmo (2018), published (Table 15) | Our reproduction |
 | --- | --- | --- |
-| Test accuracy, mean ± 95% CI | **99.94% ± 0.07** | 99.3% ± 0.3 (Table 15) |
-| 5th / 95th percentile | 100.00 / 100.00 | — |
-| Min / max | 97.02 / 100.00 | — |
-| Runs ≥ 99% | 98 / 100 | — |
-| Training accuracy, mean | 60.30% | — |
-| Training time per run | 67 s (CPU, 1 core) | — |
+| Runs | 100 | 100 |
+| Test accuracy, mean ± 95% CI | 99.3% ± 0.3 | **99.92% ± 0.06** |
+| 5th / 95th percentile | 95.9 / 100.0 | 99.28 / 100.00 |
+| Min / max | 91.6 / 100.0 | 98.06 / 100.00 |
+| Runs ≥ 99% | — | 97 / 100 |
+| Training accuracy, mean | — | 60.29% |
+
+92 of the 100 runs reach 100% test accuracy; the other 8 lie between 98.06%
+and 99.42%.
 
 Training accuracy is about 60% in every run. That is expected: with 40% of
 training labels inverted, a model that has learned XOR exactly agrees with
 only the 60% of labels that were not inverted.
 
-Mean test accuracy over epochs (100 runs):
-
-| Epoch | 10 | 20 | 30 | 50 | 100 | 150 | 200 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Test accuracy | 95.80% | 98.36% | 99.49% | 99.86% | 99.86% | 99.99% | 99.94% |
-
-**Learned clauses:**
-
-| Measure | Result |
-| --- | --- |
-| XOR clauses present in the "y = 1" bank | 92 / 100 runs |
-| XOR clauses present in at least one of the two banks | 99 / 100 runs |
-| XOR clauses present in both banks | 86 / 100 runs |
-| Exact rule in the "y = 1" bank | 7 / 100 runs |
-| Extra clauses in the "y = 1" bank, mean | 2.0 (of 10) |
-| Clauses using a noise bit (both banks), mean per run | 3.9 (of 20) |
-| Runs where no clause uses a noise bit | 1 / 100 |
-| Empty clauses / contradictory clauses (all runs) | 0 / 1 |
-| Mean clause length | 2.07 literals |
-
-What the 2,000 learned clauses (100 runs × 20) are:
-
-| Kind | Share | Example |
-| --- | --- | --- |
-| An XOR clause | 79.6% | `+ : x1 ∧ ¬x2` |
-| An XOR clause with a noise bit added | 7.4% | `+ : ¬x1 ∧ x2 ∧ x8` |
-| One of x1, x2 plus noise bits | 7.3% | `− : ¬x1 ∧ ¬x11` |
-| Noise bits only | 5.7% | `+ : ¬x9` |
-
-Example, seed 0 ("y = 1" bank, 100% test accuracy):
-
-```
-+ : x1 ∧ ¬x2
-+ : ¬x1 ∧ x2
-...
-− : x1 ∧ x2
-− : ¬x1 ∧ ¬x2
-```
-
-All rules for every run are in the JSON file (`rule_y1.rules`, `rule_y0.rules`).
-
 ### Comments
 
-**The reproduction works.** Our pipeline (data files, final-epoch
-evaluation, statistics) gives a standard-TM result consistent with Granmo's,
-so it can be used unchanged for the relaxed TM.
-
-**Our standard TM scores higher than the published 99.3%.** We use tmu, a
-later implementation, not Granmo's 2018 code. The differences we know of are
-256 instead of 200 TA states and a different random-number generator; we
-have not tested which, if any, explains the gap. For the relaxed TM, the
-comparison that matters is with **our** standard-TM runs (same data, same
-seeds, same statistics), so the bar is 99.94%, not 99.3%.
-
-**The standard TM learns XOR but does not cleanly exclude the noise bits.**
-About 80% of clauses are exactly XOR clauses; the rest carry noise bits.
-These extra clauses do not hurt accuracy: they are few, they often duplicate
-an XOR clause with one more condition, and the XOR clauses outvote them.
-But only 1 run in 100 has no noise bit anywhere, and only 7 in 100 learn the
-exact rule in the "y = 1" bank. Plan section 9 asked for "the XOR rule with
-x3–x12 excluded in most runs"; the standard TM itself does not meet that.
-This is an opportunity: the relaxed TM's L1 penalty pushes unneeded literals
-out, so it may give cleaner rules than the standard TM at the same accuracy.
-
-**With two classes, one bank can cover for the other.** The prediction
-compares the two banks' vote sums. In 7 runs the "y = 1" bank misses an XOR
-clause, but the "y = 0" bank has the mirrored clause, and the test accuracy
-is still 100% (e.g. seed 32: "y = 1" lacks `− ¬x1∧¬x2`, but "y = 0" has
-`+ ¬x1∧¬x2` twice). So "learned the rule" should be judged on both banks
-together, not on one.
+**The reproduction differs a bit from the published result.** The mean is
+0.6 percentage points higher, and the spread is much smaller: his worst 5% of
+runs fall below 95.9% and his worst run reaches 91.6%, while ours stay above
+99.28% and 98.06%. A possible reason, not tested: the paper first appeared in
+April 2018, when empty clauses still voted at prediction (see Setup). An empty
+clause fires on every input, and with only 10 clauses per class it can tip
+close votes, which would cause occasional bad runs like his. For the relaxed
+TM, the reference is our reproduction (99.92%), which uses the same data and
+statistics as part 2 will.
 
 **Decision needed for part 2.** Granmo's "20 clauses" are a 2-class
 Multi-Class TM (2 × 10), while the plan's E1 uses a single-output relaxed TM
@@ -148,9 +85,10 @@ with 20 clauses. Both have 20 clauses, but the structure differs. Options:
 ### Reproduce
 
 ```bash
-bash experiments/relaxed_tm/classification/install_tmu.sh   # installs tmu at the pinned commit
-python -m experiments.relaxed_tm.classification.run_e1_baseline   # ~1 h on 2 cores
+pip install cython   # compiles his .pyx on first use (needs a C compiler)
+python -m experiments.relaxed_tm.classification.granmo2018.repeat_demo --runs 100
 ```
 
-Seeds fix all randomness: seed k is passed to tmu as k + 1, because tmu's
-random generator never returns when seeded with 0.
+Runs are not seeded, as in his setup, so the numbers vary slightly from one
+repetition of the 100 runs to the next. His C random-number generator
+(`rand()`) also differs between operating systems; our runs used Linux.

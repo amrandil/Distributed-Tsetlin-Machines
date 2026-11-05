@@ -1,6 +1,10 @@
 """
 E1, part 1 - Standard Tsetlin Machine on noisy XOR (reproduces Granmo 2018).
 
+Two implementations of the same Multi-Class TM:
+  --impl tmu         tmu, the maintained library of Granmo's group (default)
+  --impl granmo2018  Granmo's original 2018 code (granmo2018/), 100 states per action
+
 Granmo's released data (5,000 training examples with 40% of labels
 inverted, 5,000 clean test examples), Multi-Class TM with 2 classes x 10
 clauses, T = 15, s = 3.9, 200 epochs, final epoch reported, 100 runs.
@@ -9,6 +13,7 @@ Published result: 99.3% ± 0.3 mean test accuracy.
 Usage:
     python -m experiments.relaxed_tm.classification.run_e1_baseline
     python -m experiments.relaxed_tm.classification.run_e1_baseline --runs 4 --epochs 20 --no-save
+    python -m experiments.relaxed_tm.classification.run_e1_baseline --impl granmo2018
 """
 
 from __future__ import annotations
@@ -22,7 +27,13 @@ from pathlib import Path
 
 import numpy as np
 
-from experiments.relaxed_tm.classification.baselines import TMU_SOURCE, StandardTMConfig, run_standard_tm
+from experiments.relaxed_tm.classification.baselines import (
+    TMU_SOURCE,
+    Granmo2018Config,
+    StandardTMConfig,
+    run_granmo2018_tm,
+    run_standard_tm,
+)
 from experiments.relaxed_tm.classification.data import load_noisy_xor
 from experiments.relaxed_tm.classification.xor_rules import check_xor_rule
 from experiments.relaxed_tm.common.train import summarize
@@ -30,10 +41,17 @@ from experiments.relaxed_tm.common.train import summarize
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
 
+GRANMO2018_SOURCE = (
+    "https://github.com/cair/TsetlinMachine, MultiClassTsetlinMachine.pyx at "
+    "commit 3cb8c891fbbb8b9c1999313bccf9e17c0ecefc13 (see granmo2018/)"
+)
+
+
 def one_run(job):
-    seed, config = job
+    seed, impl, config = job
     X_train, y_train, X_test, y_test = load_noisy_xor()
-    r = run_standard_tm(X_train, y_train, X_test, y_test, config, seed)
+    run = run_granmo2018_tm if impl == "granmo2018" else run_standard_tm
+    r = run(X_train, y_train, X_test, y_test, config, seed)
     hard = r.pop("hard")
     return {
         "seed": seed,
@@ -46,6 +64,7 @@ def one_run(job):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("--impl", choices=["tmu", "granmo2018"], default="tmu")
     parser.add_argument("--runs", type=int, default=100)
     parser.add_argument("--epochs", type=int, default=200)
     parser.add_argument("--clauses-per-class", type=int, default=10)
@@ -55,10 +74,17 @@ def main() -> None:
     parser.add_argument("--no-save", action="store_true")
     args = parser.parse_args()
 
-    config = StandardTMConfig(
-        clauses_per_class=args.clauses_per_class, T=args.T, s=args.s, epochs=args.epochs
-    )
-    jobs = [(seed, config) for seed in range(args.runs)]
+    if args.impl == "granmo2018":
+        # his code takes the total clause count and splits it over the 2 classes
+        config = Granmo2018Config(
+            clauses_total=2 * args.clauses_per_class, T=args.T, s=args.s, epochs=args.epochs
+        )
+        from experiments.relaxed_tm.classification import granmo2018  # noqa: F401  (compile once, before the workers start)
+    else:
+        config = StandardTMConfig(
+            clauses_per_class=args.clauses_per_class, T=args.T, s=args.s, epochs=args.epochs
+        )
+    jobs = [(seed, args.impl, config) for seed in range(args.runs)]
 
     start = time.perf_counter()
     runs = []
@@ -81,7 +107,9 @@ def main() -> None:
         "runs_with_xor_core_y1": int(sum(r["rule_y1"]["core_present"] for r in runs)),
         "runs_with_exact_rule_y1": int(sum(r["rule_y1"]["exact"] for r in runs)),
         "mean_extra_clauses_y1": float(np.mean([r["rule_y1"]["n_extra"] for r in runs])),
-        "hard_matches_tmu_all_runs": all(r["hard_matches_tmu"] for r in runs),
+        "hard_model_matches_implementation_all_runs": all(
+            r.get("hard_matches_tmu", r.get("hard_matches_original")) for r in runs
+        ),
         "mean_train_time_s": float(np.mean([r["train_time_s"] for r in runs])),
     }
     t = summary["test_accuracy"]
@@ -94,10 +122,12 @@ def main() -> None:
 
     if not args.no_save:
         RESULTS_DIR.mkdir(exist_ok=True)
-        out = RESULTS_DIR / "e1_standard_tm_noisy_xor.json"
+        name = "e1_granmo2018_tm_noisy_xor.json" if args.impl == "granmo2018" else "e1_standard_tm_noisy_xor.json"
+        out = RESULTS_DIR / name
         out.write_text(
             json.dumps(
-                {"args": vars(args), "config": asdict(config), "tmu": TMU_SOURCE,
+                {"args": vars(args), "config": asdict(config),
+                 "implementation": GRANMO2018_SOURCE if args.impl == "granmo2018" else TMU_SOURCE,
                  "summary": summary, "runs": runs},
                 indent=2,
                 ensure_ascii=False,

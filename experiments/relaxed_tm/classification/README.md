@@ -12,7 +12,7 @@ Full plan (model, data, protocol, hyperparameters, success criteria):
 | # | Experiment | Script | Status |
 | --- | --- | --- | --- |
 | E0 | Sanity check: clean 2-bit XOR | `run_e0.py` | Done: [report](reports/E0_clean_xor.md) |
-| E1 | Main result: noisy XOR, benchmark protocol | `run_e1_baseline.py` (standard TM) | Part 1 done: standard TM 99.94% ± 0.07, [report](reports/E1_noisy_xor.md). Part 2 (relaxed TM) to do |
+| E1 | Main result: noisy XOR, benchmark protocol | `granmo2018/repeat_demo.py` (reference), `run_e1_baseline.py` | Part 1 done: Granmo's code, his setup, 99.92% ± 0.06 (published 99.3% ± 0.3), [report](reports/E1_noisy_xor.md). Part 2 (relaxed TM) to do |
 | E2 | Clause count on noisy XOR | | To do |
 | E3 | Noise robustness on noisy XOR | | To do |
 | E4 | Main result: Iris, benchmark protocol | | To do |
@@ -32,7 +32,8 @@ New experiments follow the same pattern: `run_eN.py` here, a write-up in
 | `baselines.py` | Standard TM via `tmu` (the only file that imports it); converts its clauses to our `HardMultiClassTM` |
 | `install_tmu.sh` | Installs tmu at the pinned commit (see below) |
 | `xor_rules.py` | Checks learned clauses against the XOR rule: all four XOR clauses present, number of extra clauses, exact match |
-| `run_e1_baseline.py` | E1 part 1: standard TM on noisy XOR, Granmo's settings, 100 runs |
+| `run_e1_baseline.py` | Standard TM on noisy XOR, Granmo's settings, 100 seeded runs in our harness: `--impl tmu` or `--impl granmo2018` |
+| `granmo2018/` | Granmo's original 2018 code and noisy XOR demo (MIT licence), with `.orig` copies; `repeat_demo.py` runs his demo 100 times his way (E1 reference) |
 | `reports/` | One write-up per experiment; figures in `reports/figures/` |
 | `results/` | Raw results as JSON |
 
