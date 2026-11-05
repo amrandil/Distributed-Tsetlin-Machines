@@ -194,7 +194,7 @@ makes the loss worse first: a local minimum. A standard TM avoids this with its
 target T, which stops feedback to a case once it has enough votes and frees
 clauses to learn other cases; cross-entropy has no such stopping point.
 
-**To confirm** (part of E2, clause count):
+**To confirm** (part of E2, clause count). Followed up in [E0b](E0b_duplicate_clauses.md): the starting point of the weights and τ are the main causes; a T-like margin alone is not a fix.
 
 - ~~Track clauses over epochs in a failing seed~~ done (figure above): the duplicate forms in the first 5–10 epochs, before p saturates.
 - Add a T-like stopping point to the loss (zero loss once the vote sum is past a target margin) and check whether 4 clauses then reach 10/10.

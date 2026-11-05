@@ -1,0 +1,3369 @@
+{
+  "hypothesis": "speed",
+  "args": {
+    "hypothesis": "speed",
+    "seeds": 50,
+    "clauses": 4,
+    "epochs": 100,
+    "workers": 4,
+    "select": "3",
+    "no_save": false
+  },
+  "settings": [
+    {
+      "setting": {
+        "init_mean": 0.0,
+        "init_std": 0.1,
+        "tau": 1.0,
+        "margin": null,
+        "lr": 0.05,
+        "epochs": 300
+      },
+      "summary": {
+        "exact_xor_rule": 22,
+        "hard_100": 29,
+        "duplicated_clause": 28,
+        "median_epochs_to_hard_100": 3
+      },
+      "runs": [
+        {
+          "seed": 0,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 1,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 2,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 3,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 4,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 3
+        },
+        {
+          "seed": 5,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 6,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 7,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 6
+        },
+        {
+          "seed": 8,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 9,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 10,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 11,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 12,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 13,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 14,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 15,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 6
+        },
+        {
+          "seed": 16,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 17,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 15
+        },
+        {
+          "seed": 18,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 19,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 20,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 6
+        },
+        {
+          "seed": 21,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 22,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 23,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 24,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 7
+        },
+        {
+          "seed": 25,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 5
+        },
+        {
+          "seed": 26,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 27,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 5
+        },
+        {
+          "seed": 28,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 29,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 30,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 31,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 10
+        },
+        {
+          "seed": 32,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 33,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 3
+        },
+        {
+          "seed": 34,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 15
+        },
+        {
+          "seed": 35,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 36,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 37,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 38,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 39,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 40,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 41,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 4
+        },
+        {
+          "seed": 42,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 7
+        },
+        {
+          "seed": 43,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 44,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 45,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 6
+        },
+        {
+          "seed": 46,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 47,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 48,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 3
+        },
+        {
+          "seed": 49,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        }
+      ]
+    },
+    {
+      "setting": {
+        "init_mean": 0.0,
+        "init_std": 0.1,
+        "tau": 1.0,
+        "margin": null,
+        "lr": 0.01,
+        "epochs": 300
+      },
+      "summary": {
+        "exact_xor_rule": 32,
+        "hard_100": 38,
+        "duplicated_clause": 18,
+        "median_epochs_to_hard_100": 11
+      },
+      "runs": [
+        {
+          "seed": 0,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 6
+        },
+        {
+          "seed": 1,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 2,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 11
+        },
+        {
+          "seed": 3,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 11
+        },
+        {
+          "seed": 4,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 2
+        },
+        {
+          "seed": 5,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 6,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 7,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 17
+        },
+        {
+          "seed": 8,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 9,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 10,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 15
+        },
+        {
+          "seed": 11,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 4
+        },
+        {
+          "seed": 12,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 13,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 12
+        },
+        {
+          "seed": 14,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 11
+        },
+        {
+          "seed": 15,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 16,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 6
+        },
+        {
+          "seed": 17,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 23
+        },
+        {
+          "seed": 18,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 19,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 20,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 7
+        },
+        {
+          "seed": 21,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 17
+        },
+        {
+          "seed": 22,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 5
+        },
+        {
+          "seed": 23,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 5
+        },
+        {
+          "seed": 24,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 32
+        },
+        {
+          "seed": 25,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 11
+        },
+        {
+          "seed": 26,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 4
+        },
+        {
+          "seed": 27,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 9
+        },
+        {
+          "seed": 28,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 29,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 3
+        },
+        {
+          "seed": 30,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 4
+        },
+        {
+          "seed": 31,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 22
+        },
+        {
+          "seed": 32,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 13
+        },
+        {
+          "seed": 33,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 10
+        },
+        {
+          "seed": 34,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 35,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 11
+        },
+        {
+          "seed": 36,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 4
+        },
+        {
+          "seed": 37,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 5
+        },
+        {
+          "seed": 38,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 33
+        },
+        {
+          "seed": 39,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 40,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 13
+        },
+        {
+          "seed": 41,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 8
+        },
+        {
+          "seed": 42,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 11
+        },
+        {
+          "seed": 43,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 5
+        },
+        {
+          "seed": 44,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 45,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 12
+        },
+        {
+          "seed": 46,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 47,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 20
+        },
+        {
+          "seed": 48,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 17
+        },
+        {
+          "seed": 49,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        }
+      ]
+    },
+    {
+      "setting": {
+        "init_mean": 0.0,
+        "init_std": 0.1,
+        "tau": 1.0,
+        "margin": null,
+        "lr": 0.002,
+        "epochs": 300
+      },
+      "summary": {
+        "exact_xor_rule": 30,
+        "hard_100": 35,
+        "duplicated_clause": 20,
+        "median_epochs_to_hard_100": 29
+      },
+      "runs": [
+        {
+          "seed": 0,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 25
+        },
+        {
+          "seed": 1,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 2,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 95
+        },
+        {
+          "seed": 3,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 50
+        },
+        {
+          "seed": 4,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        },
+        {
+          "seed": 5,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 6,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 7,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 74
+        },
+        {
+          "seed": 8,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 9,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 10,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 45
+        },
+        {
+          "seed": 11,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 9
+        },
+        {
+          "seed": 12,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 13,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 35
+        },
+        {
+          "seed": 14,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 50
+        },
+        {
+          "seed": 15,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 16,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 27
+        },
+        {
+          "seed": 17,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 106
+        },
+        {
+          "seed": 18,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 19,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 6
+        },
+        {
+          "seed": 20,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 24
+        },
+        {
+          "seed": 21,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 57
+        },
+        {
+          "seed": 22,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 23
+        },
+        {
+          "seed": 23,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 21
+        },
+        {
+          "seed": 24,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 25,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 54
+        },
+        {
+          "seed": 26,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 8
+        },
+        {
+          "seed": 27,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 29
+        },
+        {
+          "seed": 28,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 3
+        },
+        {
+          "seed": 29,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 16
+        },
+        {
+          "seed": 30,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 20
+        },
+        {
+          "seed": 31,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 32,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 43
+        },
+        {
+          "seed": 33,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 43
+        },
+        {
+          "seed": 34,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 35,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 23
+        },
+        {
+          "seed": 36,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 15
+        },
+        {
+          "seed": 37,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 16
+        },
+        {
+          "seed": 38,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 39,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 40,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 38
+        },
+        {
+          "seed": 41,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 32
+        },
+        {
+          "seed": 42,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 47
+        },
+        {
+          "seed": 43,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 25
+        },
+        {
+          "seed": 44,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 45,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 47
+        },
+        {
+          "seed": 46,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 47,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 68
+        },
+        {
+          "seed": 48,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 99
+        },
+        {
+          "seed": 49,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 1
+        }
+      ]
+    },
+    {
+      "setting": {
+        "init_mean": -1.5,
+        "init_std": 1.0,
+        "tau": 1.0,
+        "margin": null,
+        "lr": 0.01,
+        "epochs": 300
+      },
+      "summary": {
+        "exact_xor_rule": 37,
+        "hard_100": 42,
+        "duplicated_clause": 13,
+        "median_epochs_to_hard_100": 28
+      },
+      "runs": [
+        {
+          "seed": 0,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 28
+        },
+        {
+          "seed": 1,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 49
+        },
+        {
+          "seed": 2,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 64
+        },
+        {
+          "seed": 3,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 27
+        },
+        {
+          "seed": 4,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 19
+        },
+        {
+          "seed": 5,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 6,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 55
+        },
+        {
+          "seed": 7,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 52
+        },
+        {
+          "seed": 8,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 9,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 42
+        },
+        {
+          "seed": 10,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 45
+        },
+        {
+          "seed": 11,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 17
+        },
+        {
+          "seed": 12,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 13,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 21
+        },
+        {
+          "seed": 14,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 54
+        },
+        {
+          "seed": 15,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 49
+        },
+        {
+          "seed": 16,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 28
+        },
+        {
+          "seed": 17,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 32
+        },
+        {
+          "seed": 18,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 19,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 29
+        },
+        {
+          "seed": 20,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 13
+        },
+        {
+          "seed": 21,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 37
+        },
+        {
+          "seed": 22,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 22
+        },
+        {
+          "seed": 23,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 23
+        },
+        {
+          "seed": 24,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 25,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 27
+        },
+        {
+          "seed": 26,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 16
+        },
+        {
+          "seed": 27,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 28
+        },
+        {
+          "seed": 28,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 17
+        },
+        {
+          "seed": 29,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 21
+        },
+        {
+          "seed": 30,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 19
+        },
+        {
+          "seed": 31,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 32,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 29
+        },
+        {
+          "seed": 33,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 22
+        },
+        {
+          "seed": 34,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 53
+        },
+        {
+          "seed": 35,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 33
+        },
+        {
+          "seed": 36,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 24
+        },
+        {
+          "seed": 37,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 22
+        },
+        {
+          "seed": 38,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              1
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 39,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 36
+        },
+        {
+          "seed": 40,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 35
+        },
+        {
+          "seed": 41,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 31
+        },
+        {
+          "seed": 42,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 20
+        },
+        {
+          "seed": 43,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 27
+        },
+        {
+          "seed": 44,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 35
+        },
+        {
+          "seed": 45,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : ¬x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              1,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 19
+        },
+        {
+          "seed": 46,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : x1 ∧ x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": false,
+          "duplicated_clause": true,
+          "uncovered_inputs": [
+            [
+              0,
+              0
+            ]
+          ],
+          "final_hard_accuracy": 0.75,
+          "epochs_to_hard_100": null
+        },
+        {
+          "seed": 47,
+          "rules": [
+            "+ : x1 ∧ ¬x2",
+            "+ : ¬x1 ∧ x2",
+            "− : x1 ∧ x2",
+            "− : ¬x1 ∧ ¬x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 28
+        },
+        {
+          "seed": 48,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 44
+        },
+        {
+          "seed": 49,
+          "rules": [
+            "+ : ¬x1 ∧ x2",
+            "+ : x1 ∧ ¬x2",
+            "− : ¬x1 ∧ ¬x2",
+            "− : x1 ∧ x2"
+          ],
+          "exact_xor_rule": true,
+          "duplicated_clause": false,
+          "uncovered_inputs": [],
+          "final_hard_accuracy": 1.0,
+          "epochs_to_hard_100": 14
+        }
+      ]
+    }
+  ]
+}

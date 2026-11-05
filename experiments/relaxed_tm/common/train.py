@@ -32,6 +32,11 @@ class TrainConfig:
     lambda_entropy: float = 0.0
     entropy_start_frac: float = 0.5  # switch the entropy penalty on after this share of epochs
     log_every: int = 1  # epochs between diagnostic evaluations (0 = never)
+    # T-like margin (single-output models only): an example whose vote sum is
+    # already at least `margin` on the correct side (s - b >= margin for y = 1,
+    # s - b <= -margin for y = 0) adds no loss, like the standard TM's target T.
+    # None = plain cross-entropy.
+    margin: Optional[float] = None
 
 
 def set_seed(seed: int) -> None:
@@ -40,10 +45,20 @@ def set_seed(seed: int) -> None:
     torch.manual_seed(seed)
 
 
-def _loss(model: Model, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
+def _loss(model: Model, x: torch.Tensor, y: torch.Tensor, margin: Optional[float] = None) -> torch.Tensor:
     if isinstance(model, MultiClassRelaxedTM):
+        if margin is not None:
+            raise NotImplementedError("margin is only implemented for single-output models")
         return F.cross_entropy(model.logits(x), y)
-    return F.binary_cross_entropy_with_logits(model.logits(x), y.float())
+    logits = model.logits(x)
+    if margin is None:
+        return F.binary_cross_entropy_with_logits(logits, y.float())
+    per_example = F.binary_cross_entropy_with_logits(logits, y.float(), reduction="none")
+    s = model.vote_sum(x) - model.bias
+    satisfied = ((y == 1) & (s >= margin)) | ((y == 0) & (s <= -margin))
+    # satisfied examples give no gradient; average over the whole batch, so
+    # fewer unsatisfied examples also means a smaller step (as in the TM)
+    return (per_example * (~satisfied).float()).mean()
 
 
 @torch.no_grad()
@@ -93,7 +108,7 @@ def train(
         total = 0.0
         for start in range(0, n, config.batch_size):
             idx = perm[start:start + config.batch_size]
-            loss = _loss(model, Xt[idx], yt[idx])
+            loss = _loss(model, Xt[idx], yt[idx], config.margin)
             if config.lambda_l1:
                 loss = loss + config.lambda_l1 * model.l1_penalty()
             if config.lambda_entropy and epoch >= entropy_start:

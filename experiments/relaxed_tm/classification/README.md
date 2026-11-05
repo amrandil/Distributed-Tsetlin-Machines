@@ -12,6 +12,7 @@ Full plan (model, data, protocol, hyperparameters, success criteria):
 | # | Experiment | Script | Status |
 | --- | --- | --- | --- |
 | E0 | Sanity check: clean 2-bit XOR | `run_e0.py` | Done: [report](reports/E0_clean_xor.md) |
+| E0b | Why duplicate clauses form (4 clauses, 50 seeds per setting) | `run_e0b_duplicates.py` | Done: [report](reports/E0b_duplicate_clauses.md) |
 | E1 | Main result: noisy XOR, benchmark protocol | `granmo2018/repeat_demo.py` (reference), `run_e1_baseline.py` | Part 1 done: Granmo's code, his setup, 99.92% ± 0.06 (published 99.3% ± 0.3), [report](reports/E1_noisy_xor.md). Part 2 (relaxed TM) to do |
 | E2 | Clause count on noisy XOR | | To do |
 | E3 | Noise robustness on noisy XOR | | To do |
@@ -29,6 +30,7 @@ New experiments follow the same pattern: `run_eN.py` here, a write-up in
 | `data.py` | Clean XOR; Granmo's noisy XOR files and a generator for other noise levels; Iris measurements; Granmo's Binary Iris file; 80/20 split |
 | `run_e0.py` | E0: clean XOR, several seeds, records rules, epochs to 100% and per-epoch training curves |
 | `plot_e0.py` | E0 figures (training curves, results per clause count, include-probabilities over epochs) |
+| `run_e0b_duplicates.py`, `plot_e0b.py` | E0b: starting point, margin, τ and learning rate vs. duplicate clauses; figure |
 | `baselines.py` | Standard TM via `tmu` (the only file that imports it); converts its clauses to our `HardMultiClassTM` |
 | `install_tmu.sh` | Installs tmu at the pinned commit (see below) |
 | `xor_rules.py` | Checks learned clauses against the XOR rule: all four XOR clauses present, number of extra clauses, exact match |
