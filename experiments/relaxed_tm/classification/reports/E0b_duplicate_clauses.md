@@ -157,7 +157,7 @@ anywhere; to be decided and checked in E1.
    - The far start should carry over (with 12 input bits a clause still starts
      at ≈ 0.54), but include it in the same tuning grid alongside −1.5.
 2. **Do not treat duplicates as a problem when there are enough clauses.**
-   Duplicates only cost accuracy when no clause is spare: from 6 clauses on,
+   Duplicates only cost (hard) accuracy when no clause is spare: from 6 clauses on,
    E0 already gives 10 of 10 seeds with the exact rule, and E1 uses 20. There,
    a duplicate is an extra vote for the same case, as in the standard TM,
    which also keeps several copies of the XOR clauses (E1, part 1).

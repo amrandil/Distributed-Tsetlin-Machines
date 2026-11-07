@@ -73,7 +73,7 @@ seeds that do not end with the exact XOR rule.
 - **Loss:** the failing 4-clause seeds level off higher (an uncovered input
   keeps its output at 0.5). With more clauses the loss ends lower, because
   more clauses vote on each case and push the output closer to 0 or 1.
-- **Accuracy:** jumps to 100% within about 10 epochs whenever the run
+- **Hard and soft accuracy:** jump to 100% within about 10 epochs whenever the run
   succeeds. Two failing 4-clause seeds still reach 100% hard accuracy through
   the tie rule (see Comments).
 - **Undecided literals:** fall to zero within about 20 epochs with 4–10
