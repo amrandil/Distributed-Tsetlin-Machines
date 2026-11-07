@@ -4,5 +4,9 @@ matplotlib>=3.5.0
 # Relaxed Tsetlin Machine (cakit.tm, experiments/relaxed_tm)
 torch>=2.0.0
 scikit-learn>=1.3.0
+# Granmo's original Tsetlin Machine code (E1, E4), compiled on first use; needs a C compiler
+Cython>=3.0
+# Python 3.12+ has no distutils; setuptools provides it for Cython's pyximport
+setuptools>=65
 # The standard Tsetlin Machine baseline also needs tmu, installed separately:
 #   bash experiments/relaxed_tm/classification/install_tmu.sh

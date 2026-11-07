@@ -66,3 +66,5 @@ experiments/results_*/**/*.npz
 experiments/relaxed_tm/**/data/
 # Figures used in experiment reports are committed
 !experiments/relaxed_tm/**/reports/figures/*.png
+# Relaxed TM: run logs
+experiments/relaxed_tm/**/logs/
