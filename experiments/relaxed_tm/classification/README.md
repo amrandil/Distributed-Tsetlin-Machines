@@ -13,11 +13,11 @@ Full plan (model, data, protocol, hyperparameters, success criteria):
 | --- | --- | --- | --- |
 | E0 | Sanity check: clean 2-bit XOR | `run_e0.py` | Done: [report](reports/E0_clean_xor.md) |
 | E0b | Why duplicate clauses form (4 clauses, 50 seeds per setting) | `run_e0b_duplicates.py` | Done: [report](reports/E0b_duplicate_clauses.md) |
-| E1 | Main result: noisy XOR, benchmark protocol | `granmo2018/repeat_demo.py` (reference), `run_e1_baseline.py` | Part 1 done: Granmo's code, his setup, 99.92% ± 0.06 (published 99.3% ± 0.3), [report](reports/E1_noisy_xor.md). Part 2 (relaxed TM) to do |
-| E2 | Clause count on noisy XOR | | To do |
-| E3 | Noise robustness on noisy XOR | | To do |
-| E4 | Main result: Iris, benchmark protocol | | To do |
-| E5 | Ablations (τ, init, λ₁, λ₂, bias, Iris encoding) | | To do |
+| E1 | Main result: noisy XOR, benchmark protocol | `granmo2018/repeat_demo.py` (reference), `run_e1_relaxed.py`, `plot_e1.py` | Done: standard TM reproduced at 99.92% ± 0.06 (published 99.3% ± 0.3); relaxed TM 99.71% ± 0.15 (2 × 10) and 99.63% ± 0.13 (1 × 20), [report](reports/E1_noisy_xor.md) |
+| E2 | Clause count on noisy XOR | | Skipped: noisy XOR was an extra check; ideas kept in the [E1 report](reports/E1_noisy_xor.md#further-optimization-not-pursued) |
+| E3 | Noise robustness on noisy XOR | | Skipped: noisy XOR was an extra check; ideas kept in the [E1 report](reports/E1_noisy_xor.md#further-optimization-not-pursued) |
+| E4 | Main result: Iris, benchmark protocol | `run_e4_all.sh` (all steps), `granmo2018/april2018/repeat_iris_demo.py` (reference), `run_e4_relaxed.py`, `run_e4_baseline.py`, `plot_e4.py` | Done: Granmo reproduced at 94.87% ± 0.26 (published 95.0 ± 0.2); relaxed TM 94.63% ± 0.26 (binary) and 94.02% ± 0.26 (thermometer), level with the standard TM on the same splits, [report](reports/E4_binary_iris.md) |
+| E5 | Ablations (τ, init, λ₁, λ₂, bias, Iris encoding) | | Skipped: noisy XOR was an extra check; ideas kept in the [E1 report](reports/E1_noisy_xor.md#further-optimization-not-pursued) |
 | E6 | Baselines (standard TM, dNL-style, logistic regression) | | To do |
 
 New experiments follow the same pattern: `run_eN.py` here, a write-up in
@@ -35,7 +35,11 @@ New experiments follow the same pattern: `run_eN.py` here, a write-up in
 | `install_tmu.sh` | Installs tmu at the pinned commit (see below) |
 | `xor_rules.py` | Checks learned clauses against the XOR rule: all four XOR clauses present, number of extra clauses, exact match |
 | `run_e1_baseline.py` | Standard TM on noisy XOR, Granmo's settings, 100 seeded runs in our harness: `--impl tmu` or `--impl granmo2018` |
-| `granmo2018/` | Granmo's original 2018 code and noisy XOR demo (MIT licence), with `.orig` copies; `repeat_demo.py` runs his demo 100 times his way (E1 reference) |
+| `run_e1_relaxed.py`, `plot_e1.py` | E1 part 2: relaxed TM on noisy XOR, 2 × 10 or 1 × 20 clauses; tuning pass on a validation split and final runs; figures |
+| `iris.py` | E4 splits (seed k gives every model the same flowers) for both encodings, with an optional validation split |
+| `run_e4_all.sh` | E4: all runs with one command, with a quick check first; skips steps already done |
+| `run_e4_relaxed.py`, `run_e4_baseline.py`, `plot_e4.py` | E4: relaxed TM (tuning pass and final runs), standard TM in our harness, figures and rule analysis |
+| `granmo2018/` | Granmo's original 2018 code and noisy XOR demo (MIT licence), with `.orig` copies; `repeat_demo.py` runs his demo 100 times his way (E1 reference). `april2018/`: the 21 April 2018 version and his Binary Iris demo; `repeat_iris_demo.py` runs it his way (E4 reference) |
 | `reports/` | One write-up per experiment; figures in `reports/figures/` |
 | `results/` | Raw results as JSON |
 
@@ -53,7 +57,7 @@ and caches them in `data/` (git-ignored).
 - [x] Unit tests (`tests/tm/`)
 - [ ] Baselines: standard TM via `tmu` (done for noisy XOR), logistic regression
 - [ ] Energy measurement with CodeCarbon
-- [ ] Run E0 → E6 (E0 done)
+- [ ] Run E0, E1, E4, E6 (E0, E0b, E1 and E4 done; E2, E3, E5 skipped)
 
 ## Run
 

@@ -142,6 +142,10 @@ class Granmo2018Config:
     states: int = 100            # states per action (200 in total)
     epochs: int = 200
     eval_every: int = 10         # epochs between test-accuracy logs (curve only)
+    # "current": granmo2018/MultiClassTsetlinMachine.pyx (E1, noisy XOR);
+    # "april2018": granmo2018/april2018/, the version his Binary Iris demo uses (E4)
+    version: str = "current"
+    boost_true_positive_feedback: int = 0  # april2018 only; his Iris demo uses 1
 
 
 def granmo2018_to_hard(tm, n_classes: int, clauses_total: int, n_inputs: int, states: int) -> HardMultiClassTM:
@@ -183,7 +187,14 @@ def run_granmo2018_tm(
     Each call shuffles a fresh 0..n-1 index instead of re-shuffling the previous
     order; both give a uniformly random order every epoch.
     """
-    from experiments.relaxed_tm.classification.granmo2018 import MultiClassTsetlinMachine as G
+    if config.version == "april2018":
+        from experiments.relaxed_tm.classification.granmo2018.april2018 import MultiClassTsetlinMachine as G
+        extra = {"boost_true_positive_feedback": config.boost_true_positive_feedback}
+    else:
+        from experiments.relaxed_tm.classification.granmo2018 import MultiClassTsetlinMachine as G
+        extra = {}
+        if config.boost_true_positive_feedback:
+            raise ValueError("boost_true_positive_feedback needs version='april2018'")
 
     Xtr, ytr = np.ascontiguousarray(X_train, dtype=np.int32), np.ascontiguousarray(y_train, dtype=np.int32)
     Xte, yte = np.ascontiguousarray(X_test, dtype=np.int32), np.ascontiguousarray(y_test, dtype=np.int32)
@@ -192,7 +203,7 @@ def run_granmo2018_tm(
     np.random.seed(seed)
     G.seed(seed + 1)  # glibc treats srand(0) like srand(1); shift as for tmu
     tm = G.MultiClassTsetlinMachine(
-        n_classes, config.clauses_total, Xtr.shape[1], config.states, config.s, config.T
+        n_classes, config.clauses_total, Xtr.shape[1], config.states, config.s, config.T, **extra
     )
 
     curve: List[float] = []
