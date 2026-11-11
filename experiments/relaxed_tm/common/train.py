@@ -37,6 +37,11 @@ class TrainConfig:
     # s - b <= -margin for y = 0) adds no loss, like the standard TM's target T.
     # None = plain cross-entropy.
     margin: Optional[float] = None
+    # "bce": cross-entropy (default). "squared": squared error between the soft
+    # output and the label (single-output: sigmoid(logits) vs 0/1; multi-class:
+    # softmax probabilities vs one-hot), averaged over the batch, as DiffLogic
+    # CA's loss (which is summed).
+    loss: str = "bce"
 
 
 def set_seed(seed: int) -> None:
@@ -45,7 +50,18 @@ def set_seed(seed: int) -> None:
     torch.manual_seed(seed)
 
 
-def _loss(model: Model, x: torch.Tensor, y: torch.Tensor, margin: Optional[float] = None) -> torch.Tensor:
+def _loss(model: Model, x: torch.Tensor, y: torch.Tensor, margin: Optional[float] = None,
+          kind: str = "bce") -> torch.Tensor:
+    if kind == "squared":
+        if margin is not None:
+            raise NotImplementedError("squared error is not implemented with a margin")
+        if isinstance(model, MultiClassRelaxedTM):
+            # squared error between the softmax class probabilities and the one-hot label
+            probs = torch.softmax(model.logits(x), dim=-1)
+            return ((probs - F.one_hot(y, probs.shape[-1]).float()) ** 2).sum(dim=-1).mean()
+        return ((torch.sigmoid(model.logits(x)) - y.float()) ** 2).mean()
+    if kind != "bce":
+        raise ValueError(f"unknown loss {kind!r}")
     if isinstance(model, MultiClassRelaxedTM):
         if margin is not None:
             raise NotImplementedError("margin is only implemented for single-output models")
@@ -108,7 +124,7 @@ def train(
         total = 0.0
         for start in range(0, n, config.batch_size):
             idx = perm[start:start + config.batch_size]
-            loss = _loss(model, Xt[idx], yt[idx], config.margin)
+            loss = _loss(model, Xt[idx], yt[idx], config.margin, config.loss)
             if config.lambda_l1:
                 loss = loss + config.lambda_l1 * model.l1_penalty()
             if config.lambda_entropy and epoch >= entropy_start:

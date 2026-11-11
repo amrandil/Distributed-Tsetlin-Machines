@@ -225,3 +225,77 @@ def run_granmo2018_tm(
         "hard": hard,
         "hard_matches_original": bool((hard.predict(X_test.astype(np.int64)).numpy() == own_pred).all()),
     }
+
+
+# ----------------------------------------------------------------------
+# Granmo's original 2018 single-output TM (granmo2018/TsetlinMachine.pyx)
+# ----------------------------------------------------------------------
+def granmo2018_single_to_hard(tm, n_clauses: int, n_inputs: int, states: int, threshold: float = 0.0) -> HardTM:
+    """
+    Convert a trained 2018 single-output TsetlinMachine into a ``HardTM``.
+
+    Layout in his code: even clauses vote for y = 1, odd ones against; a
+    literal is included iff its automaton's state is above ``states``.
+    Note: in this version an empty clause outputs 1 at prediction too (it
+    votes); ``HardTM.predict`` drops empty clauses, so use
+    ``granmo2018_single_predict`` to predict exactly like his code.
+    """
+    include = torch.zeros(n_clauses, 2 * n_inputs, dtype=torch.bool)
+    for j in range(n_clauses):
+        for k in range(n_inputs):
+            include[j, k] = tm.get_state(j, k, 0) > states
+            include[j, n_inputs + k] = tm.get_state(j, k, 1) > states
+    polarity = torch.tensor([1.0 if j % 2 == 0 else -1.0 for j in range(n_clauses)])
+    return HardTM(include=include, polarity=polarity, bias=threshold)
+
+
+def granmo2018_single_predict(hard: HardTM, X: np.ndarray) -> np.ndarray:
+    """His prediction rule: empty clauses vote (output 1), 1 iff vote sum >= 0."""
+    votes = hard.clause_outputs(torch.as_tensor(X).long(), predict=False) @ hard.polarity.float()
+    return (votes >= 0).long().numpy()
+
+
+def run_granmo2018_single_tm(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    config: Granmo2018Config,
+    seed: int,
+) -> Dict:
+    """
+    Like ``run_granmo2018_tm``, for his single-output TM. ``config.clauses_total``
+    is the number of clauses of the one TM; ``config.version`` and
+    ``boost_true_positive_feedback`` are not used (this TM has no boost).
+    """
+    from experiments.relaxed_tm.classification.granmo2018 import TsetlinMachine as G
+
+    if config.boost_true_positive_feedback:
+        raise ValueError("Granmo's single-output TM has no boost_true_positive_feedback")
+    Xtr, ytr = np.ascontiguousarray(X_train, dtype=np.int32), np.ascontiguousarray(y_train, dtype=np.int32)
+    Xte, yte = np.ascontiguousarray(X_test, dtype=np.int32), np.ascontiguousarray(y_test, dtype=np.int32)
+
+    np.random.seed(seed)
+    G.seed(seed + 1)  # glibc treats srand(0) like srand(1); shift as for tmu
+    tm = G.TsetlinMachine(config.clauses_total, Xtr.shape[1], config.states, config.s, config.T)
+
+    curve: List[float] = []
+    start = time.perf_counter()
+    for epoch in range(config.epochs):
+        tm.fit(Xtr, ytr, len(ytr), epochs=1)
+        last = epoch == config.epochs - 1
+        if config.eval_every and ((epoch + 1) % config.eval_every == 0 or last):
+            curve.append(float(tm.evaluate(Xte, yte, len(yte))))
+    train_time = time.perf_counter() - start
+
+    hard = granmo2018_single_to_hard(tm, config.clauses_total, Xtr.shape[1], config.states)
+    own_pred = np.array([tm.predict(np.ascontiguousarray(x)) for x in Xte])
+    return {
+        "test": float(tm.evaluate(Xte, yte, len(yte))),
+        "train": float(tm.evaluate(Xtr, ytr, len(ytr))),
+        "test_curve": curve,
+        "train_time_s": train_time,
+        "hard": hard,
+        "own_pred_test": own_pred,
+        "hard_matches_original": bool((granmo2018_single_predict(hard, X_test) == own_pred).all()),
+    }

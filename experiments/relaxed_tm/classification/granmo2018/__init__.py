@@ -12,5 +12,6 @@ import pyximport
 pyximport.install(setup_args={"include_dirs": np.get_include()}, language_level=2)
 
 from . import MultiClassTsetlinMachine  # noqa: E402
+from . import TsetlinMachine  # noqa: E402  (single-output TM, used for Game of Life)
 
-__all__ = ["MultiClassTsetlinMachine"]
+__all__ = ["MultiClassTsetlinMachine", "TsetlinMachine"]

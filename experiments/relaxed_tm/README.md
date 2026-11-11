@@ -15,6 +15,7 @@ The model itself lives in [`cakit/tm/`](../../cakit/tm/); see its
 | --- | --- | --- |
 | Tier 0: classification without CA (noisy XOR, Iris) | [`classification/`](classification/) | In progress: E0 done |
 | Later: relaxed TM as a CA update rule | to be added as sibling folders | Not started |
+| Game of Life: relaxed TM as a CA update rule | [`game_of_life/`](game_of_life/) | Plan written |
 
 Each stage folder has the same shape:
 
